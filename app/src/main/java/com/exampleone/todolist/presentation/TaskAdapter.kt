@@ -10,7 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.exampleone.todolist.R
 import com.exampleone.todolist.databinding.TaskItemBinding
-import com.exampleone.todolist.domain.TaskModel
+import com.exampleone.todolist.data.TaskModel
 import com.google.android.material.checkbox.MaterialCheckBox
 import java.util.*
 

@@ -1,4 +1,4 @@
-package com.exampleone.todolist.domain
+package com.exampleone.todolist.data
 
 import androidx.lifecycle.LiveData
 import androidx.room.*

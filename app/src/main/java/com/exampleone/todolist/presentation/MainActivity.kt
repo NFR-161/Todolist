@@ -15,8 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.exampleone.todolist.R
 import com.exampleone.todolist.data.Database
 import com.exampleone.todolist.databinding.ActivityMainBinding
-import com.exampleone.todolist.domain.TaskModel
-import com.exampleone.todolist.domain.TaskRepository
+import com.exampleone.todolist.data.TaskModel
+import com.exampleone.todolist.data.TaskRepository
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 

@@ -1,7 +1,7 @@
-package com.exampleone.todolist.domain
+package com.exampleone.todolist.data
 
-import com.exampleone.todolist.domain.TaskDao
-import com.exampleone.todolist.domain.TaskModel
+import com.exampleone.todolist.data.TaskDao
+import com.exampleone.todolist.data.TaskModel
 
 class TaskRepository(private val taskDao: TaskDao) {
 

@@ -2,7 +2,7 @@ package com.exampleone.todolist.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.exampleone.todolist.domain.TaskRepository
+import com.exampleone.todolist.data.TaskRepository
 
 class TaskFactory (private val taskRepository: TaskRepository): ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
