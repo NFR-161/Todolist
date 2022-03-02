@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/showMenu"
+        android:icon="@drawable/circle_white"
+        android:title="@string/menu"
+        app:showAsAction="ifRoom">
+    <menu>
+
+        <item
+            android:id="@+id/clear"
+            android:title="@string/clear"
+            app:showAsAction="ifRoom"/>
+
+        <item
+            android:id="@+id/settings"
+            android:title="@string/settings"
+            app:showAsAction="ifRoom"/>
+
+        <item
+            android:id="@+id/help"
+            android:title="@string/help"
+            app:showAsAction="ifRoom"/>
+
+    </menu>
+
+    </item>
+             <item
+                android:id="@+id/showFab"
+                android:icon="@drawable/circle_gray"
+                android:title="@string/showFAB"
+                app:showAsAction="ifRoom"/>
+
+</menu>
+
+
