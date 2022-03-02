@@ -2,8 +2,8 @@ package com.exampleone.todolist.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.exampleone.todolist.models.TaskModel
-import com.exampleone.todolist.repositories.TaskRepository
+import com.exampleone.todolist.domain.TaskModel
+import com.exampleone.todolist.domain.TaskRepository
 import kotlinx.coroutines.launch
 
 class TaskViewModel(private val taskRepository: TaskRepository) : ViewModel() {

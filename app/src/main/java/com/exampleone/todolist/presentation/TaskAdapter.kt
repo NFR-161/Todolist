@@ -1,4 +1,4 @@
-package com.exampleone.todolist.tabs
+package com.exampleone.todolist.presentation
 
 
 import android.text.SpannableString
@@ -10,11 +10,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.exampleone.todolist.R
 import com.exampleone.todolist.databinding.TaskItemBinding
-import com.exampleone.todolist.models.TaskModel
+import com.exampleone.todolist.domain.TaskModel
 import com.google.android.material.checkbox.MaterialCheckBox
 import java.util.*
 
-class TaskAdapter(private val deleteTask:(TaskModel)->Unit,private val strikeThrough:(nameT: MaterialCheckBox, taskModel:TaskModel)->Unit,private val startPencil:()->Unit): RecyclerView.Adapter<TaskAdapter.TaskHolder>() {
+class TaskAdapter(private val deleteTask:(TaskModel)->Unit, private val strikeThrough:(nameT: MaterialCheckBox, taskModel: TaskModel)->Unit, private val startPencil:()->Unit): RecyclerView.Adapter<TaskAdapter.TaskHolder>() {
 
     private val tasksList = ArrayList<TaskModel>()
 

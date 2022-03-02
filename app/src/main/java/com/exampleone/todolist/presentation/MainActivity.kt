@@ -15,9 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.exampleone.todolist.R
 import com.exampleone.todolist.data.Database
 import com.exampleone.todolist.databinding.ActivityMainBinding
-import com.exampleone.todolist.models.TaskModel
-import com.exampleone.todolist.repositories.TaskRepository
-import com.exampleone.todolist.tabs.TaskAdapter
+import com.exampleone.todolist.domain.TaskModel
+import com.exampleone.todolist.domain.TaskRepository
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -97,7 +96,7 @@ class MainActivity : AppCompatActivity(),View.OnClickListener  {
         taskAdapter = TaskAdapter ({
                 taskModel: TaskModel -> deleteTask(taskModel)},
             {
-                    nameT: MaterialCheckBox, taskModel:TaskModel ->
+                    nameT: MaterialCheckBox, taskModel: TaskModel ->
                 strikeThrough(nameT,taskModel)
             },{startPencil()})
 
@@ -111,7 +110,7 @@ class MainActivity : AppCompatActivity(),View.OnClickListener  {
             taskAdapter?.notifyDataSetChanged()
         })
     }
-    private fun deleteTask(taskModel:TaskModel) {
+    private fun deleteTask(taskModel: TaskModel) {
         taskViewModel?.delete(taskModel)
     }
 
@@ -123,7 +122,7 @@ class MainActivity : AppCompatActivity(),View.OnClickListener  {
                 .commit()
         }
     }
-    private fun strikeThrough(nameT: MaterialCheckBox,taskModel:TaskModel){
+    private fun strikeThrough(nameT: MaterialCheckBox,taskModel: TaskModel){
         taskViewModel?.updateTask(taskModel.copy(isDone = nameT.isChecked))
     }
 

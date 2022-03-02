@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.exampleone.todolist.R
 import com.exampleone.todolist.data.Database
 import com.exampleone.todolist.databinding.AddBinding
-import com.exampleone.todolist.repositories.TaskRepository
+import com.exampleone.todolist.domain.TaskRepository
 
 
 class Add : Fragment() {
