@@ -15,13 +15,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.exampleone.todolist.R
 import com.exampleone.todolist.data.Database
 import com.exampleone.todolist.databinding.ActivityMainBinding
-import com.exampleone.todolist.data.TaskModel
-import com.exampleone.todolist.data.TaskRepository
+import com.exampleone.todolist.domain.TaskModel
+import com.exampleone.todolist.domain.TaskRepository
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
-class MainActivity : AppCompatActivity(),View.OnClickListener  {
+class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private var taskRepository: TaskRepository? = null
     private var taskViewModel: TaskViewModel? = null
@@ -37,7 +37,6 @@ class MainActivity : AppCompatActivity(),View.OnClickListener  {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         val tasksDao = Database.getInstance(application).taskDAO
-
         taskRepository = TaskRepository(tasksDao)
         taskFactory = TaskFactory(taskRepository!!)
         taskViewModel = ViewModelProvider(this, taskFactory!!)[TaskViewModel::class.java]
@@ -47,9 +46,9 @@ class MainActivity : AppCompatActivity(),View.OnClickListener  {
         // startAnimation()
 
         binding?.fab?.setOnClickListener(this)
-        binding?.bottomBarFAB?.setOnMenuItemClickListener { menuItem:MenuItem ->
+        binding?.bottomBarFAB?.setOnMenuItemClickListener { menuItem: MenuItem ->
 
-        when(menuItem.itemId) {
+            when (menuItem.itemId) {
                 R.id.showFab -> {
                     if (binding!!.fab.isVisible) {
                         binding!!.fab.visibility = View.GONE
@@ -65,25 +64,34 @@ class MainActivity : AppCompatActivity(),View.OnClickListener  {
                 }
                 R.id.clear -> {
 
-        val builder = MaterialAlertDialogBuilder(this, R.style.MyDialogTheme)
-                .setMessage(resources.getString(R.string.messageDialog))
+                    val builder = MaterialAlertDialogBuilder(this, R.style.MyDialogTheme)
+                        .setMessage(resources.getString(R.string.messageDialog))
 
-                .setNeutralButton(resources.getString(R.string.close)) { dialog, which ->
+                        .setNeutralButton(resources.getString(R.string.close)) { dialog, which ->
                         }
-                .setPositiveButton(resources.getString(R.string.ok)) { dialog, which ->
+                        .setPositiveButton(resources.getString(R.string.ok)) { dialog, which ->
                             taskViewModel?.deleteAll()
                         }
-                .show()
+                        .show()
 
-                    builder.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor (this,
-                        R.color.black
-                    ))
-                    builder.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor (this,
-                        R.color.black
-                    ))
-                    builder.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(ContextCompat.getColor (this,
-                        R.color.black
-                    ))
+                    builder.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(
+                        ContextCompat.getColor(
+                            this,
+                            R.color.black
+                        )
+                    )
+                    builder.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(
+                        ContextCompat.getColor(
+                            this,
+                            R.color.black
+                        )
+                    )
+                    builder.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(
+                        ContextCompat.getColor(
+                            this,
+                            R.color.black
+                        )
+                    )
 
                     true
                 }
@@ -91,25 +99,25 @@ class MainActivity : AppCompatActivity(),View.OnClickListener  {
             }
         }
     }
-    private fun initRecyclerTasks(){
-        binding?.recyclerTodoList?.layoutManager = LinearLayoutManager(this)
-        taskAdapter = TaskAdapter ({
-                taskModel: TaskModel -> deleteTask(taskModel)},
-            {
-                    nameT: MaterialCheckBox, taskModel: TaskModel ->
-                strikeThrough(nameT,taskModel)
-            },{startPencil()})
 
-           binding?.recyclerTodoList?.adapter = taskAdapter
+    private fun initRecyclerTasks() {
+        binding?.recyclerTodoList?.layoutManager = LinearLayoutManager(this)
+        taskAdapter = TaskAdapter(
+            { taskModel: TaskModel -> deleteTask(taskModel) },
+            { nameT: MaterialCheckBox, taskModel: TaskModel -> strikeThrough(nameT, taskModel) },
+            { startPencil() })
+
+        binding?.recyclerTodoList?.adapter = taskAdapter
 
     }
 
-    private fun displayTasks(){
+    private fun displayTasks() {
         taskViewModel?.tasks?.observe(this, Observer {
             taskAdapter?.setList(it)
             taskAdapter?.notifyDataSetChanged()
         })
     }
+
     private fun deleteTask(taskModel: TaskModel) {
         taskViewModel?.delete(taskModel)
     }
@@ -118,18 +126,19 @@ class MainActivity : AppCompatActivity(),View.OnClickListener  {
 
         when (view?.id) {
 
-            R.id.fab -> supportFragmentManager.beginTransaction().replace(R.id.contentAddText, Add())
-                .commit()
+            R.id.fab -> supportFragmentManager.beginTransaction()
+                .replace(R.id.contentAddText, Add()).commit()
         }
     }
-    private fun strikeThrough(nameT: MaterialCheckBox,taskModel: TaskModel){
+
+    private fun strikeThrough(nameT: MaterialCheckBox, taskModel: TaskModel) {
         taskViewModel?.updateTask(taskModel.copy(isDone = nameT.isChecked))
     }
 
-    private fun startPencil(){
+    private fun startPencil() {
         val pencil = MediaPlayer.create(this, R.raw.pencil1)
         pencil.start()
-}
+    }
     /*private fun startAnimation(){
         YoYo.with(Techniques.Swing)
             .duration(1000)

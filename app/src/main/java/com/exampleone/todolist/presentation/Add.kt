@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.exampleone.todolist.R
 import com.exampleone.todolist.data.Database
 import com.exampleone.todolist.databinding.AddBinding
-import com.exampleone.todolist.data.TaskRepository
+import com.exampleone.todolist.domain.TaskRepository
 
 
 class Add : Fragment() {
@@ -66,8 +66,8 @@ class Add : Fragment() {
 
     // запускаем main activity с анимацией
     private fun startActivity() {
-       val options = ActivityOptions.makeSceneTransitionAnimation(context as FragmentActivity)
-        startActivity(Intent(context, MainActivity::class.java),options.toBundle())
+        val options = ActivityOptions.makeSceneTransitionAnimation(context as FragmentActivity)
+        startActivity(Intent(context, MainActivity::class.java), options.toBundle())
     }
 
     private fun sendTaskToMainAct() {

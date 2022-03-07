@@ -10,19 +10,27 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.exampleone.todolist.R
 import com.exampleone.todolist.databinding.TaskItemBinding
-import com.exampleone.todolist.data.TaskModel
+import com.exampleone.todolist.domain.TaskModel
 import com.google.android.material.checkbox.MaterialCheckBox
 import java.util.*
 
-class TaskAdapter(private val deleteTask:(TaskModel)->Unit, private val strikeThrough:(nameT: MaterialCheckBox, taskModel: TaskModel)->Unit, private val startPencil:()->Unit): RecyclerView.Adapter<TaskAdapter.TaskHolder>() {
+class TaskAdapter(
+    private val deleteTask: (TaskModel) -> Unit,
+    private val strikeThrough: (nameT: MaterialCheckBox, taskModel: TaskModel) -> Unit,
+    private val startPencil: () -> Unit
+) : RecyclerView.Adapter<TaskAdapter.TaskHolder>() {
 
     private val tasksList = ArrayList<TaskModel>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding: TaskItemBinding =
-            DataBindingUtil.inflate(layoutInflater, R.layout.task_item, parent, false)
-        return TaskHolder(binding)
+        val bindingTI: TaskItemBinding = DataBindingUtil.inflate(
+            layoutInflater,
+            R.layout.task_item,
+            parent,
+            false
+        )
+        return TaskHolder(bindingTI)
 
     }
 
@@ -31,7 +39,7 @@ class TaskAdapter(private val deleteTask:(TaskModel)->Unit, private val strikeTh
     }
 
     override fun onBindViewHolder(holder: TaskHolder, position: Int) {
-        holder.bind(tasksList[position], deleteTask,strikeThrough,startPencil)
+        holder.bind(tasksList[position], deleteTask, strikeThrough, startPencil)
 
     }
 
@@ -41,7 +49,8 @@ class TaskAdapter(private val deleteTask:(TaskModel)->Unit, private val strikeTh
 
     }
 
-    class TaskHolder(val binding: TaskItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    class TaskHolder(private val bindingTaskIt: TaskItemBinding) :
+        RecyclerView.ViewHolder(bindingTaskIt.root) {
 
         fun bind(
             task: TaskModel,
@@ -50,22 +59,22 @@ class TaskAdapter(private val deleteTask:(TaskModel)->Unit, private val strikeTh
             startPencil: () -> Unit
         ) {
 
-            if(task.isDone){
+            if (task.isDone) {
                 val sp = SpannableString(task.name)
                 sp.setSpan(StrikethroughSpan(), 0, task.name.length, 0)
-                binding.nameTask.text = sp
-                binding.nameTask.isChecked = true
+                bindingTaskIt.nameTask.text = sp
+                bindingTaskIt.nameTask.isChecked = true
 
             } else {
-                binding.nameTask.text = task.name
-                binding.nameTask.isChecked = false
+                bindingTaskIt.nameTask.text = task.name
+                bindingTaskIt.nameTask.isChecked = false
             }
-                binding.nameTask.setOnClickListener(View.OnClickListener {
-                    strikeThrough(binding.nameTask,task)
-                    if (binding.nameTask.isChecked){
-                        startPencil()
-                    }
-                })
+            bindingTaskIt.nameTask.setOnClickListener(View.OnClickListener {
+                strikeThrough(bindingTaskIt.nameTask, task)
+                if (bindingTaskIt.nameTask.isChecked) {
+                    startPencil()
+                }
+            })
         }
     }
 }
