@@ -105,7 +105,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun initRecyclerTasks() {
         binding?.recyclerTodoList?.layoutManager = LinearLayoutManager(this)
         taskAdapter = TaskAdapter(
-            { taskModel: TaskModel -> deleteTask(taskModel) },
             { nameT: MaterialCheckBox, taskModel: TaskModel -> strikeThrough(nameT, taskModel) },
             { startPencil() })
 

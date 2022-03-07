@@ -15,12 +15,11 @@ import com.google.android.material.checkbox.MaterialCheckBox
 import java.util.*
 
 class TaskAdapter(
-    private val deleteTask: (TaskModel) -> Unit,
     private val strikeThrough: (nameT: MaterialCheckBox, taskModel: TaskModel) -> Unit,
     private val startPencil: () -> Unit
 ) : RecyclerView.Adapter<TaskAdapter.TaskHolder>() {
 
-      val tasksList = ArrayList<TaskModel>()
+    val tasksList = ArrayList<TaskModel>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -39,7 +38,7 @@ class TaskAdapter(
     }
 
     override fun onBindViewHolder(holder: TaskHolder, position: Int) {
-        holder.bind(tasksList[position], deleteTask, strikeThrough, startPencil)
+        holder.bind(tasksList[position], strikeThrough, startPencil)
 
     }
 
@@ -54,7 +53,6 @@ class TaskAdapter(
 
         fun bind(
             task: TaskModel,
-            deleteTask: (TaskModel) -> Unit,
             strikeThrough: (nameT: MaterialCheckBox, taskModel: TaskModel) -> Unit,
             startPencil: () -> Unit
         ) {
