@@ -115,8 +115,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun displayTasks() {
         taskViewModel?.tasks?.observe(this, Observer {
-            taskAdapter?.setList(it)
-            taskAdapter?.notifyDataSetChanged()
+            taskAdapter?.submitList(it)
         })
     }
 
@@ -157,7 +156,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val item = taskAdapter?.tasksList?.get(viewHolder.adapterPosition)
+                val item = taskAdapter?.currentList?.get(viewHolder.adapterPosition)
                 if (item != null) {
                     deleteTask(item)
                 }
