@@ -20,7 +20,7 @@ class TaskAdapter(
     private val startPencil: () -> Unit
 ) : RecyclerView.Adapter<TaskAdapter.TaskHolder>() {
 
-    private val tasksList = ArrayList<TaskModel>()
+      val tasksList = ArrayList<TaskModel>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -73,8 +73,10 @@ class TaskAdapter(
                 strikeThrough(bindingTaskIt.nameTask, task)
                 if (bindingTaskIt.nameTask.isChecked) {
                     startPencil()
+
                 }
             })
+
         }
     }
 }

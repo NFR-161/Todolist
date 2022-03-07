@@ -11,7 +11,9 @@ import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.exampleone.todolist.R
 import com.exampleone.todolist.data.Database
 import com.exampleone.todolist.databinding.ActivityMainBinding
@@ -108,6 +110,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             { startPencil() })
 
         binding?.recyclerTodoList?.adapter = taskAdapter
+        binding?.recyclerTodoList?.let { setupSwipeListener(it) }
 
     }
 
@@ -139,11 +142,29 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val pencil = MediaPlayer.create(this, R.raw.pencil1)
         pencil.start()
     }
-    /*private fun startAnimation(){
-        YoYo.with(Techniques.Swing)
-            .duration(1000)
-            .repeat(0)
-            .playOn(binding?.AppNameText)
+
+    private fun setupSwipeListener(rvTaskList: RecyclerView) {
+        val callback = object : ItemTouchHelper.SimpleCallback(
+            0,
+            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+        ) {
+
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val item = taskAdapter?.tasksList?.get(viewHolder.adapterPosition)
+                if (item != null) {
+                    deleteTask(item)
+                }
+            }
+        }
+        val itemTouchHelper = ItemTouchHelper(callback)
+        itemTouchHelper.attachToRecyclerView(rvTaskList)
     }
-*/
 }
