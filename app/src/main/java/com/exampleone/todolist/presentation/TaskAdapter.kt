@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.exampleone.todolist.R
 import com.exampleone.todolist.databinding.TaskItemBinding
@@ -18,8 +17,9 @@ import java.util.*
 class TaskAdapter(
     private val strikeThrough: (nameT: MaterialCheckBox, taskModel: TaskModel) -> Unit,
     private val startPencil: () -> Unit
-) : ListAdapter<TaskModel, TaskAdapter.TaskHolder>(TaskItemDiffCallBack()) {
+) : RecyclerView.Adapter<TaskAdapter.TaskHolder>() {
 
+    val tasksList = ArrayList<TaskModel>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -30,10 +30,21 @@ class TaskAdapter(
             false
         )
         return TaskHolder(bindingTI)
+
+    }
+
+    override fun getItemCount(): Int {
+        return tasksList.size
     }
 
     override fun onBindViewHolder(holder: TaskHolder, position: Int) {
-        holder.bind(getItem(position), strikeThrough, startPencil)
+        holder.bind(tasksList[position], strikeThrough, startPencil)
+
+    }
+
+    fun setList(tasks: List<TaskModel>) {
+        tasksList.clear()
+        tasksList.addAll(tasks)
 
     }
 
