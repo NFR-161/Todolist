@@ -50,17 +50,17 @@ class PanelEditTask : BottomSheetDialogFragment(), View.OnKeyListener {
 
             R.id.editTask -> {
                 if (keyEvent.action == KeyEvent.ACTION_DOWN && i == KeyEvent.KEYCODE_ENTER) {
-
-                    taskViewModel?.startUpdateTask(
-                        idTask.toString().toInt(),
-                        binding?.editTask?.text?.toString()!!
-                    )
-
-                    binding?.editTask?.setText("")
-                    dismiss()
-                    val options = ActivityOptions.makeSceneTransitionAnimation(context as FragmentActivity)
-                    startActivity(Intent(context, MainActivity::class.java), options.toBundle())
-                    return true
+                        if(!binding?.editTask?.text.toString().isNullOrBlank())
+                            taskViewModel?.startUpdateTask(
+                            idTask.toString().toInt(),
+                            binding?.editTask?.text?.toString()!!
+                        )
+                        binding?.editTask?.setText("")
+                        dismiss()
+                        val options =
+                            ActivityOptions.makeSceneTransitionAnimation(context as FragmentActivity)
+                        startActivity(Intent(context, MainActivity::class.java), options.toBundle())
+                        return true
                 }
             }
         }

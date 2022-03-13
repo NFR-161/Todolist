@@ -39,7 +39,7 @@ class TaskAdapter(
     }
 
     override fun onBindViewHolder(holder: TaskHolder, position: Int) {
-        holder.bind(tasksList[position], strikeThrough, startPencil,editTask)
+        holder.bind(tasksList[position], strikeThrough, startPencil, editTask)
 
     }
 
@@ -76,7 +76,9 @@ class TaskAdapter(
                 }
             })
             bindingTaskIt.nameTask.setOnLongClickListener(View.OnLongClickListener {
-                editTask(task)
+                if (!bindingTaskIt.nameTask.isChecked && !task.isDone) {
+                    editTask(task)
+                }
                 true
             })
 
