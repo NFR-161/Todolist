@@ -10,6 +10,10 @@ class TaskViewModel(private val taskRepository: TaskRepository) : ViewModel() {
 
     val tasks = taskRepository.tasks
 
+    fun startUpdateTask(idTask:Int, nameTask:String) {
+        updateTask(TaskModel(idTask, nameTask,false))
+    }
+
     fun startInsert(nameTask:String) {
         insert(TaskModel(0, nameTask, false))
     }

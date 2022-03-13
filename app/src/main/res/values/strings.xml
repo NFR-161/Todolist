@@ -9,6 +9,8 @@
     <string name="save">Save it</string>
     <string name="ok">Ok</string>
     <string name="help">Help</string>
+    <string name="editTask">Edit your task</string> editTask
+    <string name="hint_edit">Edit</string> hint_edit
     <string name="messageDialog">Do you really want to clear the list?</string>
     <string name="enter">Enter</string>
     <string name="toRecycler">To Recycler</string>

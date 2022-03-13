@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".tabs.PanelEditCategory">
+
+    <FrameLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/orange"
+            android:paddingBottom="70dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/headerEditTask"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/black"
+                android:text="@string/editTask"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/sectionEditTask"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/headerEditTask"
+                android:layout_margin="10dp"
+                app:boxBackgroundColor="@android:color/transparent"
+                app:boxStrokeColor="@android:color/white"
+                app:startIconTint="@android:color/white"
+                app:endIconTint="@android:color/holo_red_light"
+                app:hintTextColor="@android:color/white"
+                app:endIconMode="clear_text"
+                app:boxStrokeWidthFocused="4dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTask"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:textColor="@android:color/white"
+                    android:textCursorDrawable="@drawable/cursor"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </FrameLayout>
+
+</layout>

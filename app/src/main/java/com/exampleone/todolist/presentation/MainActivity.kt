@@ -9,6 +9,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -101,12 +102,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
     }
-
     private fun initRecyclerTasks() {
         binding?.recyclerTodoList?.layoutManager = LinearLayoutManager(this)
         taskAdapter = TaskAdapter(
             { nameT: MaterialCheckBox, taskModel: TaskModel -> strikeThrough(nameT, taskModel) },
-            { startPencil() })
+            { startPencil() },
+            { taskModel: TaskModel -> editTask(taskModel) }
+        )
 
         binding?.recyclerTodoList?.adapter = taskAdapter
         binding?.recyclerTodoList?.let { setupSwipeListener(it) }
@@ -116,7 +118,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun displayTasks() {
         taskViewModel?.tasks?.observe(this, Observer {
             taskAdapter?.setList(it)
-            taskAdapter?.notifyDataSetChanged()
+            taskAdapter?.notifyDataSetChanged() //TODO: try to use another adapter
         })
     }
 
@@ -165,5 +167,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
         val itemTouchHelper = ItemTouchHelper(callback)
         itemTouchHelper.attachToRecyclerView(rvTaskList)
+    }
+
+    private fun editTask(taskModel: TaskModel) {
+        val panelTask = PanelEditTask()
+        val parameters = Bundle()
+        parameters.putString("idTask", taskModel.id.toString())
+        parameters.putString("nameTask", taskModel.name)
+        panelTask.arguments = parameters
+
+        panelTask.show(supportFragmentManager, "editTask")
     }
 }

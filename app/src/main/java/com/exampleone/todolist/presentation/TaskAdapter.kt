@@ -16,7 +16,8 @@ import java.util.*
 
 class TaskAdapter(
     private val strikeThrough: (nameT: MaterialCheckBox, taskModel: TaskModel) -> Unit,
-    private val startPencil: () -> Unit
+    private val startPencil: () -> Unit,
+    private val editTask: (TaskModel) -> Unit
 ) : RecyclerView.Adapter<TaskAdapter.TaskHolder>() {
 
     val tasksList = ArrayList<TaskModel>()
@@ -38,7 +39,7 @@ class TaskAdapter(
     }
 
     override fun onBindViewHolder(holder: TaskHolder, position: Int) {
-        holder.bind(tasksList[position], strikeThrough, startPencil)
+        holder.bind(tasksList[position], strikeThrough, startPencil,editTask)
 
     }
 
@@ -54,7 +55,8 @@ class TaskAdapter(
         fun bind(
             task: TaskModel,
             strikeThrough: (nameT: MaterialCheckBox, taskModel: TaskModel) -> Unit,
-            startPencil: () -> Unit
+            startPencil: () -> Unit,
+            editTask: (TaskModel) -> Unit
         ) {
 
             if (task.isDone) {
@@ -71,10 +73,14 @@ class TaskAdapter(
                 strikeThrough(bindingTaskIt.nameTask, task)
                 if (bindingTaskIt.nameTask.isChecked) {
                     startPencil()
-
                 }
+            })
+            bindingTaskIt.nameTask.setOnLongClickListener(View.OnLongClickListener {
+                editTask(task)
+                true
             })
 
         }
+
     }
 }

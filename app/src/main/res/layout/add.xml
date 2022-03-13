@@ -59,7 +59,6 @@
                 app:hintTextColor="@android:color/darker_gray"
                 app:layout_constraintTop_toTopOf="parent"
                 app:startIconContentDescription="@string/enter"
-
                 app:startIconTint="@android:color/black"
                 tools:layout_editor_absoluteX="5dp">
 
