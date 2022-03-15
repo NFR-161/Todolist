@@ -102,6 +102,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
     }
+
     private fun initRecyclerTasks() {
         binding?.recyclerTodoList?.layoutManager = LinearLayoutManager(this)
         taskAdapter = TaskAdapter(
@@ -131,7 +132,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         when (view?.id) {
 
             R.id.fab -> supportFragmentManager.beginTransaction()
-                .replace(R.id.contentAddText, Add()).commit()
+                .replace(R.id.contentAddText, Add()).addToBackStack(null).commit()
         }
     }
 
@@ -170,12 +171,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun editTask(taskModel: TaskModel) {
-        val panelTask = PanelEditTask()
+        val panelEditTask = PanelEditTask()
         val parameters = Bundle()
         parameters.putString("idTask", taskModel.id.toString())
         parameters.putString("nameTask", taskModel.name)
-        panelTask.arguments = parameters
+        panelEditTask.arguments = parameters
 
-        panelTask.show(supportFragmentManager, "editTask")
+        panelEditTask.show(supportFragmentManager, "editTask")
     }
 }

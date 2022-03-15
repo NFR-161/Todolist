@@ -51,6 +51,7 @@ class Add : Fragment() {
 
                 R.id.close -> {
                     startActivity()
+
                     true
                 }
 

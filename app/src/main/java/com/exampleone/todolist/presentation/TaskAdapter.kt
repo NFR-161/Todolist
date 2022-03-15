@@ -58,29 +58,31 @@ class TaskAdapter(
             startPencil: () -> Unit,
             editTask: (TaskModel) -> Unit
         ) {
+            bindingTaskIt.apply {
+                if (task.isDone) {
+                    val sp = SpannableString(task.name)
+                    sp.setSpan(StrikethroughSpan(), 0, task.name.length, 0)
+                    nameTask.text = sp
+                    nameTask.isChecked = true
 
-            if (task.isDone) {
-                val sp = SpannableString(task.name)
-                sp.setSpan(StrikethroughSpan(), 0, task.name.length, 0)
-                bindingTaskIt.nameTask.text = sp
-                bindingTaskIt.nameTask.isChecked = true
-
-            } else {
-                bindingTaskIt.nameTask.text = task.name
-                bindingTaskIt.nameTask.isChecked = false
+                } else {
+                    nameTask.text = task.name
+                    nameTask.isChecked = false
+                }
+                nameTask.setOnClickListener(View.OnClickListener {
+                    strikeThrough(nameTask, task)
+                    if (nameTask.isChecked) {
+                        startPencil()
+                    }
+                })
+                nameTask.setOnLongClickListener(View.OnLongClickListener {
+                    if (!nameTask.isChecked && !task.isDone) {
+                        editTask(task)
+                    }
+                    true
+                })
             }
-            bindingTaskIt.nameTask.setOnClickListener(View.OnClickListener {
-                strikeThrough(bindingTaskIt.nameTask, task)
-                if (bindingTaskIt.nameTask.isChecked) {
-                    startPencil()
-                }
-            })
-            bindingTaskIt.nameTask.setOnLongClickListener(View.OnLongClickListener {
-                if (!bindingTaskIt.nameTask.isChecked && !task.isDone) {
-                    editTask(task)
-                }
-                true
-            })
+
 
         }
 
