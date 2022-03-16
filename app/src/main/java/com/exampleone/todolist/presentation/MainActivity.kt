@@ -132,7 +132,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         when (view?.id) {
 
-            R.id.fab -> callFragmentAdd("add")
+            R.id.fab -> callFragmentAdd()
 
         }
     }
@@ -181,12 +181,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         panelEditTask.show(supportFragmentManager, "editTask")
     }
 
-    private fun callFragmentAdd(name: String) {
+    private fun callFragmentAdd() {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.contentAddText, Add()).addToBackStack(name).commit()
+            .replace(R.id.contentAddText, Add()).addToBackStack(null).commit()
     }
 
-    override fun onBackPressed() {
-        supportFragmentManager.popBackStack("add", FragmentManager.POP_BACK_STACK_INCLUSIVE)
-    }
 }
