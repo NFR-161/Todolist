@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -131,8 +132,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         when (view?.id) {
 
-            R.id.fab -> supportFragmentManager.beginTransaction()
-                .replace(R.id.contentAddText, Add()).addToBackStack(null).commit()
+            R.id.fab -> callFragmentAdd("add")
+
         }
     }
 
@@ -178,5 +179,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         panelEditTask.arguments = parameters
 
         panelEditTask.show(supportFragmentManager, "editTask")
+    }
+
+    private fun callFragmentAdd(name: String) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.contentAddText, Add()).addToBackStack(name).commit()
+    }
+
+    override fun onBackPressed() {
+        supportFragmentManager.popBackStack("add", FragmentManager.POP_BACK_STACK_INCLUSIVE)
     }
 }
