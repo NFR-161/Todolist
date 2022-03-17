@@ -1,4 +1,4 @@
-package com.exampleone.todolist.presentation
+package com.exampleone.todolist.presentation.panels
 
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +18,10 @@ import com.exampleone.todolist.R
 import com.exampleone.todolist.data.Database
 import com.exampleone.todolist.databinding.ActivityMainBinding
 import com.exampleone.todolist.domain.*
+import com.exampleone.todolist.domain.useCases.*
+import com.exampleone.todolist.presentation.TaskAdapter
+import com.exampleone.todolist.presentation.TaskFactory
+import com.exampleone.todolist.presentation.TaskViewModel
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 

@@ -2,7 +2,7 @@ package com.exampleone.todolist.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.exampleone.todolist.domain.*
+import com.exampleone.todolist.domain.useCases.*
 
 class TaskFactory(
     private val getTaskListUseCase: GetTaskListUseCase,

@@ -1,4 +1,4 @@
-package com.exampleone.todolist.presentation
+package com.exampleone.todolist.presentation.panels
 
 import android.app.ActivityOptions
 import android.content.Intent
@@ -13,6 +13,9 @@ import com.exampleone.todolist.R
 import com.exampleone.todolist.data.Database
 import com.exampleone.todolist.databinding.AddBinding
 import com.exampleone.todolist.domain.*
+import com.exampleone.todolist.domain.useCases.*
+import com.exampleone.todolist.presentation.TaskFactory
+import com.exampleone.todolist.presentation.TaskViewModel
 
 
 class Add : Fragment() {
