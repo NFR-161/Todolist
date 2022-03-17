@@ -9,8 +9,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -19,8 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.exampleone.todolist.R
 import com.exampleone.todolist.data.Database
 import com.exampleone.todolist.databinding.ActivityMainBinding
-import com.exampleone.todolist.domain.TaskModel
-import com.exampleone.todolist.domain.TaskRepository
+import com.exampleone.todolist.domain.*
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -31,6 +28,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private var taskViewModel: TaskViewModel? = null
     private var taskFactory: TaskFactory? = null
     private var taskAdapter: TaskAdapter? = null
+    lateinit var getTaskListUseCase: GetTaskListUseCase
+    lateinit var deleteTaskUseCase: DeleteTaskUseCase
+    lateinit var insertTaskUseCase: InsertTaskUseCase
+    lateinit var deleteAllTasksUseCase: DeleteAllTasksUseCase
+    lateinit var updateTaskUseCase: UpdateTaskUseCase
 
     private var binding: ActivityMainBinding? = null
 
@@ -42,7 +44,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         val tasksDao = Database.getInstance(application).taskDAO
         taskRepository = TaskRepository(tasksDao)
-        taskFactory = TaskFactory(taskRepository!!)
+        getTaskListUseCase = GetTaskListUseCase(taskRepository!!)
+        deleteTaskUseCase = DeleteTaskUseCase(taskRepository!!)
+        insertTaskUseCase = InsertTaskUseCase(taskRepository!!)
+        deleteAllTasksUseCase = DeleteAllTasksUseCase(taskRepository!!)
+        updateTaskUseCase = UpdateTaskUseCase(taskRepository!!)
+        taskFactory = TaskFactory(
+            getTaskListUseCase,
+            deleteTaskUseCase,
+            insertTaskUseCase,
+            deleteAllTasksUseCase,
+            updateTaskUseCase
+        )
         taskViewModel = ViewModelProvider(this, taskFactory!!)[TaskViewModel::class.java]
 
         initRecyclerTasks()

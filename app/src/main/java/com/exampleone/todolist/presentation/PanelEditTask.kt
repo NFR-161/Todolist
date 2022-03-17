@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.exampleone.todolist.R
 import com.exampleone.todolist.data.Database
 import com.exampleone.todolist.databinding.PanelEditTaskBinding
-import com.exampleone.todolist.domain.TaskRepository
+import com.exampleone.todolist.domain.*
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class PanelEditTask : BottomSheetDialogFragment(), View.OnKeyListener {
@@ -21,9 +21,13 @@ class PanelEditTask : BottomSheetDialogFragment(), View.OnKeyListener {
     private var binding: PanelEditTaskBinding? = null
     private var taskRepository: TaskRepository? = null
     private var taskViewModel: TaskViewModel? = null
-    private var factory: TaskFactory? = null
+    private var taskFactory: TaskFactory? = null
     private var idTask: Int? = null
-
+    lateinit var getTaskListUseCase: GetTaskListUseCase
+    lateinit var deleteTaskUseCase: DeleteTaskUseCase
+    lateinit var insertTaskUseCase: InsertTaskUseCase
+    lateinit var deleteAllTasksUseCase: DeleteAllTasksUseCase
+    lateinit var updateTaskUseCase: UpdateTaskUseCase
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,8 +41,19 @@ class PanelEditTask : BottomSheetDialogFragment(), View.OnKeyListener {
 
         val categoriesDao = Database.getInstance((context as FragmentActivity).application).taskDAO
         taskRepository = TaskRepository(categoriesDao)
-        factory = TaskFactory(taskRepository!!)
-        taskViewModel = ViewModelProvider(this, factory!!)[TaskViewModel::class.java]
+        getTaskListUseCase = GetTaskListUseCase(taskRepository!!)
+        deleteTaskUseCase = DeleteTaskUseCase(taskRepository!!)
+        insertTaskUseCase = InsertTaskUseCase(taskRepository!!)
+        deleteAllTasksUseCase = DeleteAllTasksUseCase(taskRepository!!)
+        updateTaskUseCase = UpdateTaskUseCase(taskRepository!!)
+        taskFactory = TaskFactory(
+            getTaskListUseCase,
+            deleteTaskUseCase,
+            insertTaskUseCase,
+            deleteAllTasksUseCase,
+            updateTaskUseCase
+        )
+        taskViewModel = ViewModelProvider(this, taskFactory!!)[TaskViewModel::class.java]
 
         binding?.editTask?.setOnKeyListener(this)
 

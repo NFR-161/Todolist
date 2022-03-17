@@ -2,12 +2,24 @@ package com.exampleone.todolist.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.exampleone.todolist.domain.TaskRepository
+import com.exampleone.todolist.domain.*
 
-class TaskFactory(private val taskRepository: TaskRepository) : ViewModelProvider.Factory {
+class TaskFactory(
+    private val getTaskListUseCase: GetTaskListUseCase,
+    private val deleteTaskUseCase: DeleteTaskUseCase,
+    private val insertTaskUseCase: InsertTaskUseCase,
+    private val deleteAllTasksUseCase: DeleteAllTasksUseCase,
+    private val updateTaskUseCase: UpdateTaskUseCase
+) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(TaskViewModel::class.java)) {
-            return TaskViewModel(taskRepository) as T
+            return TaskViewModel(
+                getTaskListUseCase,
+                deleteTaskUseCase,
+                insertTaskUseCase,
+                deleteAllTasksUseCase,
+                updateTaskUseCase
+            ) as T
         }
         throw IllegalArgumentException("Unknown View Model class")
     }

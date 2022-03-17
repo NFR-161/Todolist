@@ -12,13 +12,17 @@ import androidx.lifecycle.ViewModelProvider
 import com.exampleone.todolist.R
 import com.exampleone.todolist.data.Database
 import com.exampleone.todolist.databinding.AddBinding
-import com.exampleone.todolist.domain.TaskRepository
+import com.exampleone.todolist.domain.*
 
 
 class Add : Fragment() {
 
     private var binding: AddBinding? = null
-
+    lateinit var getTaskListUseCase: GetTaskListUseCase
+    lateinit var deleteTaskUseCase: DeleteTaskUseCase
+    lateinit var insertTaskUseCase: InsertTaskUseCase
+    lateinit var deleteAllTasksUseCase: DeleteAllTasksUseCase
+    lateinit var updateTaskUseCase: UpdateTaskUseCase
     private var taskRepository: TaskRepository? = null
     private var taskViewModel: TaskViewModel? = null
     private var taskFactory: TaskFactory? = null
@@ -31,7 +35,6 @@ class Add : Fragment() {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.add, container, false)
 
-
         // анимация
         val inflater = TransitionInflater.from(requireContext())
         enterTransition = inflater.inflateTransition(R.transition.slide_right)
@@ -39,7 +42,18 @@ class Add : Fragment() {
 
         val taskDao = Database.getInstance((context as FragmentActivity).application).taskDAO
         taskRepository = TaskRepository(taskDao)
-        taskFactory = TaskFactory(taskRepository!!)
+        getTaskListUseCase = GetTaskListUseCase(taskRepository!!)
+        deleteTaskUseCase = DeleteTaskUseCase(taskRepository!!)
+        insertTaskUseCase = InsertTaskUseCase(taskRepository!!)
+        deleteAllTasksUseCase = DeleteAllTasksUseCase(taskRepository!!)
+        updateTaskUseCase = UpdateTaskUseCase(taskRepository!!)
+        taskFactory = TaskFactory(
+            getTaskListUseCase,
+            deleteTaskUseCase,
+            insertTaskUseCase,
+            deleteAllTasksUseCase,
+            updateTaskUseCase
+        )
         taskViewModel = ViewModelProvider(this, taskFactory!!)[TaskViewModel::class.java]
 
         binding?.saveIT?.setOnClickListener(View.OnClickListener {
