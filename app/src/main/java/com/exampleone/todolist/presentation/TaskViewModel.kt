@@ -25,19 +25,19 @@ class TaskViewModel(
     }
 
     fun insert(taskModel: TaskModel) = viewModelScope.launch {
-        insertTaskUseCase.insertTask(taskModel)
+        insertTaskUseCase(taskModel)
     }
 
     fun updateTask(taskModel: TaskModel) = viewModelScope.launch {
-        updateTaskUseCase.updateTask(taskModel)
+        updateTaskUseCase(taskModel)
     }
 
     fun delete(taskModel: TaskModel) = viewModelScope.launch {
-        deleteTaskUseCase.deleteTask(taskModel)
+        deleteTaskUseCase(taskModel)
     }
 
     fun deleteAll() = viewModelScope.launch {
-        deleteAllTasksUseCase.deleteAllTasks()
+        deleteAllTasksUseCase()
     }
 
 

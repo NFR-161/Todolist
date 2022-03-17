@@ -5,7 +5,7 @@ import com.exampleone.todolist.domain.TaskRepository
 
 class UpdateTaskUseCase(private val taskRepository: TaskRepository) {
 
-    suspend fun updateTask(taskModel: TaskModel) {
-        taskRepository.updateTask(taskModel)
+    suspend operator fun invoke(taskModel: TaskModel) {
+        return taskRepository.updateTask(taskModel)
     }
 }

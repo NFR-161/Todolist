@@ -4,7 +4,9 @@ import com.exampleone.todolist.domain.TaskRepository
 
 class DeleteAllTasksUseCase(private val taskRepository: TaskRepository) {
 
-    suspend fun deleteAllTasks() {
-        taskRepository.deleteAllTasks()
+    suspend operator fun invoke() {
+        return taskRepository.deleteAllTasks()
     }
+
+
 }
