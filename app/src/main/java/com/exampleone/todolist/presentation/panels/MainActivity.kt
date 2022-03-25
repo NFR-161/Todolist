@@ -47,6 +47,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         val tasksDao = Database.getInstance(application).taskDAO
+
         taskRepository = TaskRepository(tasksDao)
         getTaskListUseCase = GetTaskListUseCase(taskRepository!!)
         deleteTaskUseCase = DeleteTaskUseCase(taskRepository!!)
@@ -124,9 +125,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun initRecyclerTasks() {
         binding?.recyclerTodoList?.layoutManager = LinearLayoutManager(this)
         taskAdapter = TaskAdapter(
-            { nameT: MaterialCheckBox, taskModel: TaskModel -> strikeThrough(nameT, taskModel) },
+            { nameT, taskModel -> strikeThrough(nameT, taskModel)},
             { startPencil() },
-            { taskModel: TaskModel -> editTask(taskModel) }
+            { taskModel -> editTask(taskModel) }
         )
 
         binding?.recyclerTodoList?.adapter = taskAdapter
@@ -149,7 +150,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         when (view?.id) {
 
-            R.id.fab -> callFragmentAdd()
+            R.id.fab -> launchFragmentAdd()
 
         }
     }
@@ -198,7 +199,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         panelEditTask.show(supportFragmentManager, "editTask")
     }
 
-    private fun callFragmentAdd() {
+    private fun launchFragmentAdd() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.contentAddText, Add()).addToBackStack(null).commit()
     }

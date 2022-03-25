@@ -15,7 +15,7 @@ import com.google.android.material.checkbox.MaterialCheckBox
 import java.util.*
 
 class TaskAdapter(
-    private val strikeThrough: (nameT: MaterialCheckBox, taskModel: TaskModel) -> Unit,
+    private val strikeThrough: (MaterialCheckBox, TaskModel) -> Unit,
     private val startPencil: () -> Unit,
     private val editTask: (TaskModel) -> Unit
 ) : RecyclerView.Adapter<TaskAdapter.TaskHolder>() {
