@@ -5,15 +5,15 @@ import com.exampleone.todolist.data.TaskModel
 
 interface TaskRepository{
 
-    suspend fun insertTask(taskModel: TaskModel)
+    suspend fun insertTask(taskItem: TaskItem)
 
-    suspend fun updateTask(taskModel: TaskModel)
+    suspend fun updateTask(taskItem: TaskItem)
 
-    suspend fun deleteTask(taskModel: TaskModel)
+    suspend fun deleteTask(taskItem: TaskItem)
 
     suspend fun deleteAllTasks()
 
-    fun getAllTasks(): LiveData<List<TaskModel>>
+    fun getAllTasks(): LiveData<List<TaskItem>>
 
 
 }

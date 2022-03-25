@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.exampleone.todolist.R
 import com.exampleone.todolist.data.TaskModel
 import com.exampleone.todolist.databinding.ActivityMainBinding
+import com.exampleone.todolist.domain.TaskItem
 import com.exampleone.todolist.presentation.TaskApp
 import com.exampleone.todolist.presentation.TaskFactory
 import com.exampleone.todolist.presentation.TaskViewModel
@@ -76,9 +77,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun initRecyclerTasks() {
         taskAdapter = TaskAdapter(
-            { nameT, taskModel -> strikeThrough(nameT, taskModel) },
+            { nameT, taskItem -> strikeThrough(nameT, taskItem) },
             { startPencil() },
-            { taskModel -> editTask(taskModel) }
+            { taskItem -> editTask(taskItem) }
         )
         binding.recyclerTodoList.adapter = taskAdapter
         binding.recyclerTodoList.itemAnimator = null
@@ -92,8 +93,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         })
     }
 
-    private fun deleteTask(taskModel: TaskModel) {
-        taskViewModel.delete(taskModel)
+    private fun deleteTask(taskItem: TaskItem) {
+        taskViewModel.delete(taskItem)
     }
 
     override fun onClick(view: View?) {
@@ -102,8 +103,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun strikeThrough(nameT: MaterialCheckBox, taskModel: TaskModel) {
-        taskViewModel.updateTask(taskModel.copy(isDone = nameT.isChecked))
+    private fun strikeThrough(nameT: MaterialCheckBox, taskItem: TaskItem) {
+        taskViewModel.updateTask(taskItem.copy(isDone = nameT.isChecked))
     }
 
     private fun startPencil() {
@@ -135,11 +136,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         itemTouchHelper.attachToRecyclerView(rvTaskList)
     }
 
-    private fun editTask(taskModel: TaskModel) {
+    private fun editTask(taskItem: TaskItem) {
         val panelEditTask = PanelEditTask()
         val parameters = Bundle()
-        parameters.putString("idTask", taskModel.id.toString())
-        parameters.putString("nameTask", taskModel.name)
+        parameters.putString("idTask", taskItem.id.toString())
+        parameters.putString("nameTask", taskItem.name)
         panelEditTask.arguments = parameters
         panelEditTask.show(supportFragmentManager, "editTask")
     }

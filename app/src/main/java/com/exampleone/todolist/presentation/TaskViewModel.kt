@@ -3,6 +3,7 @@ package com.exampleone.todolist.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.exampleone.todolist.data.TaskModel
+import com.exampleone.todolist.domain.TaskItem
 import com.exampleone.todolist.domain.useCases.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,23 +19,23 @@ class TaskViewModel @Inject constructor(
     val tasks = getTaskListUseCase.tasks
 
     fun startUpdateTask(idTask: Int, nameTask: String) {
-        updateTask(TaskModel(idTask, nameTask, false))
+        updateTask(TaskItem(idTask, nameTask, false))
     }
 
     fun startInsert(nameTask: String) {
-        insert(TaskModel(0, nameTask, false))
+        insert(TaskItem(0, nameTask, false))
     }
 
-    fun insert(taskModel: TaskModel) = viewModelScope.launch {
-        insertTaskUseCase(taskModel)
+    fun insert(taskItem: TaskItem) = viewModelScope.launch {
+        insertTaskUseCase(taskItem)
     }
 
-    fun updateTask(taskModel: TaskModel) = viewModelScope.launch {
-        updateTaskUseCase(taskModel)
+    fun updateTask(taskItem: TaskItem) = viewModelScope.launch {
+        updateTaskUseCase(taskItem)
     }
 
-    fun delete(taskModel: TaskModel) = viewModelScope.launch {
-        deleteTaskUseCase(taskModel)
+    fun delete(taskItem: TaskItem) = viewModelScope.launch {
+        deleteTaskUseCase(taskItem)
     }
 
     fun deleteAll() = viewModelScope.launch {

@@ -11,16 +11,14 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.exampleone.todolist.R
 import com.exampleone.todolist.databinding.TaskItemBinding
-import com.exampleone.todolist.data.TaskModel
+import com.exampleone.todolist.domain.TaskItem
 import com.google.android.material.checkbox.MaterialCheckBox
-import java.util.*
-import javax.inject.Inject
 
 class TaskAdapter(
-    private val strikeThrough: (MaterialCheckBox, TaskModel) -> Unit,
+    private val strikeThrough: (MaterialCheckBox, TaskItem) -> Unit,
     private val startPencil: () -> Unit,
-    private val editTask: (TaskModel) -> Unit
-) : ListAdapter<TaskModel, TaskHolder>(TaskInfoDiffCallback) {
+    private val editTask: (TaskItem) -> Unit
+) : ListAdapter<TaskItem, TaskHolder>(TaskInfoDiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -45,10 +43,10 @@ class TaskHolder(private val binding: TaskItemBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(
-        task: TaskModel,
-        strikeThrough: (MaterialCheckBox, TaskModel) -> Unit,
+        task: TaskItem,
+        strikeThrough: (MaterialCheckBox, TaskItem) -> Unit,
         startPencil: () -> Unit,
-        editTask: (TaskModel) -> Unit
+        editTask: (TaskItem) -> Unit
     ) {
         binding.apply {
             if (task.isDone) {
