@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.exampleone.todolist.R
 import com.exampleone.todolist.data.Database
+import com.exampleone.todolist.data.TaskModel
 import com.exampleone.todolist.databinding.ActivityMainBinding
 import com.exampleone.todolist.domain.*
 import com.exampleone.todolist.domain.useCases.*
@@ -28,9 +29,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
-    private var taskRepository: TaskRepository? = null
-    private var taskViewModel: TaskViewModel? = null
-    private var taskFactory: TaskFactory? = null
+    lateinit var taskRepository: TaskRepository
+    lateinit var taskViewModel: TaskViewModel
+    lateinit var taskFactory: TaskFactory
     private var taskAdapter: TaskAdapter? = null
     lateinit var getTaskListUseCase: GetTaskListUseCase
     lateinit var deleteTaskUseCase: DeleteTaskUseCase
@@ -38,7 +39,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var deleteAllTasksUseCase: DeleteAllTasksUseCase
     lateinit var updateTaskUseCase: UpdateTaskUseCase
 
-    private var binding: ActivityMainBinding? = null
+    lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,11 +50,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val tasksDao = Database.getInstance(application).taskDAO
 
         taskRepository = TaskRepository(tasksDao)
-        getTaskListUseCase = GetTaskListUseCase(taskRepository!!)
-        deleteTaskUseCase = DeleteTaskUseCase(taskRepository!!)
-        insertTaskUseCase = InsertTaskUseCase(taskRepository!!)
-        deleteAllTasksUseCase = DeleteAllTasksUseCase(taskRepository!!)
-        updateTaskUseCase = UpdateTaskUseCase(taskRepository!!)
+        getTaskListUseCase = GetTaskListUseCase(taskRepository)
+        deleteTaskUseCase = DeleteTaskUseCase(taskRepository)
+        insertTaskUseCase = InsertTaskUseCase(taskRepository)
+        deleteAllTasksUseCase = DeleteAllTasksUseCase(taskRepository)
+        updateTaskUseCase = UpdateTaskUseCase(taskRepository)
         taskFactory = TaskFactory(
             getTaskListUseCase,
             deleteTaskUseCase,
@@ -61,20 +62,20 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             deleteAllTasksUseCase,
             updateTaskUseCase
         )
-        taskViewModel = ViewModelProvider(this, taskFactory!!)[TaskViewModel::class.java]
+        taskViewModel = ViewModelProvider(this, taskFactory)[TaskViewModel::class.java]
 
         initRecyclerTasks()
         displayTasks()
         // startAnimation()
 
-        binding?.fab?.setOnClickListener(this)
-        binding?.bottomBarFAB?.setOnMenuItemClickListener { menuItem: MenuItem ->
+        binding.fab.setOnClickListener(this)
+        binding.bottomBarFAB.setOnMenuItemClickListener { menuItem: MenuItem ->
 
             when (menuItem.itemId) {
                 R.id.showFab -> {
-                    if (binding!!.fab.isVisible) {
-                        binding!!.fab.visibility = View.GONE
-                    } else binding!!.fab.visibility = View.VISIBLE
+                    if (binding.fab.isVisible) {
+                        binding.fab.visibility = View.GONE
+                    } else binding.fab.visibility = View.VISIBLE
                     true
                 }
 
@@ -84,79 +85,45 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 R.id.help -> {
                     true
                 }
-                R.id.clear -> {
-
-                    val builder = MaterialAlertDialogBuilder(this, R.style.MyDialogTheme)
-                        .setMessage(resources.getString(R.string.messageDialog))
-
-                        .setNeutralButton(resources.getString(R.string.close)) { dialog, which ->
-                        }
-                        .setPositiveButton(resources.getString(R.string.ok)) { dialog, which ->
-                            taskViewModel?.deleteAll()
-                        }
-                        .show()
-
-                    builder.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(
-                        ContextCompat.getColor(
-                            this,
-                            R.color.black
-                        )
-                    )
-                    builder.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(
-                        ContextCompat.getColor(
-                            this,
-                            R.color.black
-                        )
-                    )
-                    builder.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(
-                        ContextCompat.getColor(
-                            this,
-                            R.color.black
-                        )
-                    )
-
-                    true
-                }
+                R.id.clear -> cancelOrOk()
                 else -> false
             }
         }
     }
 
     private fun initRecyclerTasks() {
-        binding?.recyclerTodoList?.layoutManager = LinearLayoutManager(this)
+        binding.recyclerTodoList.layoutManager = LinearLayoutManager(this)
         taskAdapter = TaskAdapter(
-            { nameT, taskModel -> strikeThrough(nameT, taskModel)},
+            { nameT, taskModel -> strikeThrough(nameT, taskModel) },
             { startPencil() },
             { taskModel -> editTask(taskModel) }
         )
 
-        binding?.recyclerTodoList?.adapter = taskAdapter
-        binding?.recyclerTodoList?.let { setupSwipeListener(it) }
+        binding.recyclerTodoList.adapter = taskAdapter
+        setupSwipeListener(binding.recyclerTodoList)
 
     }
 
     private fun displayTasks() {
-        taskViewModel?.tasks?.observe(this, Observer {
+        taskViewModel.tasks.observe(this, Observer {
             taskAdapter?.setList(it)
             taskAdapter?.notifyDataSetChanged() //TODO: try to use another adapter
         })
     }
 
     private fun deleteTask(taskModel: TaskModel) {
-        taskViewModel?.delete(taskModel)
+        taskViewModel.delete(taskModel)
     }
 
     override fun onClick(view: View?) {
 
         when (view?.id) {
-
             R.id.fab -> launchFragmentAdd()
-
         }
     }
 
     private fun strikeThrough(nameT: MaterialCheckBox, taskModel: TaskModel) {
-        taskViewModel?.updateTask(taskModel.copy(isDone = nameT.isChecked))
+        taskViewModel.updateTask(taskModel.copy(isDone = nameT.isChecked))
     }
 
     private fun startPencil() {
@@ -204,4 +171,37 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             .replace(R.id.contentAddText, Add()).addToBackStack(null).commit()
     }
 
+    private fun cancelOrOk(): Boolean {
+
+        val builder = MaterialAlertDialogBuilder(this, R.style.MyDialogTheme)
+            .setMessage(resources.getString(R.string.messageDialog))
+
+            .setNeutralButton(resources.getString(R.string.close)) { dialog, which ->
+            }
+            .setPositiveButton(resources.getString(R.string.ok)) { dialog, which ->
+                taskViewModel.deleteAll()
+            }
+            .show()
+
+        builder.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(
+            ContextCompat.getColor(
+                this,
+                R.color.black
+            )
+        )
+        builder.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(
+            ContextCompat.getColor(
+                this,
+                R.color.black
+            )
+        )
+        builder.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(
+            ContextCompat.getColor(
+                this,
+                R.color.black
+            )
+        )
+        return true
+    }
 }
+

@@ -1,6 +1,7 @@
 package com.exampleone.todolist.domain
 
 import com.exampleone.todolist.data.TaskDao
+import com.exampleone.todolist.data.TaskModel
 
 class TaskRepository(private val taskDao: TaskDao) {
 

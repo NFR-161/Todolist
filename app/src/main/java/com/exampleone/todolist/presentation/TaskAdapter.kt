@@ -10,7 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.exampleone.todolist.R
 import com.exampleone.todolist.databinding.TaskItemBinding
-import com.exampleone.todolist.domain.TaskModel
+import com.exampleone.todolist.data.TaskModel
 import com.google.android.material.checkbox.MaterialCheckBox
 import java.util.*
 
@@ -24,13 +24,13 @@ class TaskAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val bindingTI: TaskItemBinding = DataBindingUtil.inflate(
+        val binding: TaskItemBinding = DataBindingUtil.inflate(
             layoutInflater,
             R.layout.task_item,
             parent,
             false
         )
-        return TaskHolder(bindingTI)
+        return TaskHolder(binding)
 
     }
 
@@ -49,16 +49,16 @@ class TaskAdapter(
 
     }
 
-    class TaskHolder(private val bindingTaskIt: TaskItemBinding) :
-        RecyclerView.ViewHolder(bindingTaskIt.root) {
+    class TaskHolder(private val binding: TaskItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(
             task: TaskModel,
-            strikeThrough: (nameT: MaterialCheckBox, taskModel: TaskModel) -> Unit,
+            strikeThrough: (MaterialCheckBox, TaskModel) -> Unit,
             startPencil: () -> Unit,
             editTask: (TaskModel) -> Unit
         ) {
-            bindingTaskIt.apply {
+            binding.apply {
                 if (task.isDone) {
                     val sp = SpannableString(task.name)
                     sp.setSpan(StrikethroughSpan(), 0, task.name.length, 0)
