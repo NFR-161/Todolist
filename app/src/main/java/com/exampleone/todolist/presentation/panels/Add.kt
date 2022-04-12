@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import com.exampleone.todolist.R
 import com.exampleone.todolist.data.Database
+import com.exampleone.todolist.data.TaskRepositoryImpl
 import com.exampleone.todolist.databinding.AddBinding
 import com.exampleone.todolist.domain.*
 import com.exampleone.todolist.domain.useCases.*
@@ -26,7 +27,7 @@ class Add : Fragment() {
     lateinit var insertTaskUseCase: InsertTaskUseCase
     lateinit var deleteAllTasksUseCase: DeleteAllTasksUseCase
     lateinit var updateTaskUseCase: UpdateTaskUseCase
-    private var taskRepository: TaskRepository? = null
+    private var taskRepositoryImpl: TaskRepositoryImpl? = null
     private var taskViewModel: TaskViewModel? = null
     private var taskFactory: TaskFactory? = null
 
@@ -44,12 +45,12 @@ class Add : Fragment() {
 
 
         val taskDao = Database.getInstance((context as FragmentActivity).application).taskDAO
-        taskRepository = TaskRepository(taskDao)
-        getTaskListUseCase = GetTaskListUseCase(taskRepository!!)
-        deleteTaskUseCase = DeleteTaskUseCase(taskRepository!!)
-        insertTaskUseCase = InsertTaskUseCase(taskRepository!!)
-        deleteAllTasksUseCase = DeleteAllTasksUseCase(taskRepository!!)
-        updateTaskUseCase = UpdateTaskUseCase(taskRepository!!)
+        taskRepositoryImpl = TaskRepositoryImpl(taskDao)
+        getTaskListUseCase = GetTaskListUseCase(taskRepositoryImpl!!)
+        deleteTaskUseCase = DeleteTaskUseCase(taskRepositoryImpl!!)
+        insertTaskUseCase = InsertTaskUseCase(taskRepositoryImpl!!)
+        deleteAllTasksUseCase = DeleteAllTasksUseCase(taskRepositoryImpl!!)
+        updateTaskUseCase = UpdateTaskUseCase(taskRepositoryImpl!!)
         taskFactory = TaskFactory(
             getTaskListUseCase,
             deleteTaskUseCase,

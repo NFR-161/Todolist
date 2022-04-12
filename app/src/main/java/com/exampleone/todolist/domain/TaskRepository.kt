@@ -1,25 +1,20 @@
 package com.exampleone.todolist.domain
 
+import androidx.lifecycle.LiveData
 import com.exampleone.todolist.data.TaskDao
 import com.exampleone.todolist.data.TaskModel
 
-class TaskRepository(private val taskDao: TaskDao) {
+interface TaskRepository{
 
-    val tasks = taskDao.getAllTasks()
+    suspend fun insertTask(taskModel: TaskModel)
 
-    suspend fun insertTask(taskModel: TaskModel) {
-        taskDao.insertTask(taskModel)
-    }
+    suspend fun updateTask(taskModel: TaskModel)
 
-    suspend fun updateTask(taskModel: TaskModel) {
-        taskDao.updateTask(taskModel)
-    }
+    suspend fun deleteTask(taskModel: TaskModel)
 
-    suspend fun deleteTask(taskModel: TaskModel) {
-        taskDao.deleteTask(taskModel)
-    }
+    suspend fun deleteAllTasks()
 
-    suspend fun deleteAllTasks() {
-        taskDao.deleteAllTasks()
-    }
+    fun getAllTasks(): LiveData<List<TaskModel>>
+
+
 }

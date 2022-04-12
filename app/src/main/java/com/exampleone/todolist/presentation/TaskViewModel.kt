@@ -5,8 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.exampleone.todolist.data.TaskModel
 import com.exampleone.todolist.domain.useCases.*
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class TaskViewModel(
+class TaskViewModel @Inject constructor(
     getTaskListUseCase: GetTaskListUseCase,
     private val deleteTaskUseCase: DeleteTaskUseCase,
     private val insertTaskUseCase: InsertTaskUseCase,

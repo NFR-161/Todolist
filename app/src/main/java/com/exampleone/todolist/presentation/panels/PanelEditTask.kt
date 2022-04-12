@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import com.exampleone.todolist.R
 import com.exampleone.todolist.data.Database
+import com.exampleone.todolist.data.TaskRepositoryImpl
 import com.exampleone.todolist.databinding.PanelEditTaskBinding
 import com.exampleone.todolist.domain.*
 import com.exampleone.todolist.domain.useCases.*
@@ -22,7 +23,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 class PanelEditTask : BottomSheetDialogFragment(), View.OnKeyListener {
 
     private var binding: PanelEditTaskBinding? = null
-    private var taskRepository: TaskRepository? = null
+    private var taskRepositoryImpl: TaskRepositoryImpl? = null
     private var taskViewModel: TaskViewModel? = null
     private var taskFactory: TaskFactory? = null
     private var idTask: Int? = null
@@ -43,12 +44,12 @@ class PanelEditTask : BottomSheetDialogFragment(), View.OnKeyListener {
         binding?.editTask?.setText(arguments?.getString("nameTask").toString())
 
         val categoriesDao = Database.getInstance((context as FragmentActivity).application).taskDAO
-        taskRepository = TaskRepository(categoriesDao)
-        getTaskListUseCase = GetTaskListUseCase(taskRepository!!)
-        deleteTaskUseCase = DeleteTaskUseCase(taskRepository!!)
-        insertTaskUseCase = InsertTaskUseCase(taskRepository!!)
-        deleteAllTasksUseCase = DeleteAllTasksUseCase(taskRepository!!)
-        updateTaskUseCase = UpdateTaskUseCase(taskRepository!!)
+        taskRepositoryImpl = TaskRepositoryImpl(categoriesDao)
+        getTaskListUseCase = GetTaskListUseCase(taskRepositoryImpl!!)
+        deleteTaskUseCase = DeleteTaskUseCase(taskRepositoryImpl!!)
+        insertTaskUseCase = InsertTaskUseCase(taskRepositoryImpl!!)
+        deleteAllTasksUseCase = DeleteAllTasksUseCase(taskRepositoryImpl!!)
+        updateTaskUseCase = UpdateTaskUseCase(taskRepositoryImpl!!)
         taskFactory = TaskFactory(
             getTaskListUseCase,
             deleteTaskUseCase,

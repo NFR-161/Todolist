@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.exampleone.todolist.R
 import com.exampleone.todolist.data.Database
 import com.exampleone.todolist.data.TaskModel
+import com.exampleone.todolist.data.TaskRepositoryImpl
 import com.exampleone.todolist.databinding.ActivityMainBinding
 import com.exampleone.todolist.domain.*
 import com.exampleone.todolist.domain.useCases.*
@@ -29,7 +30,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
-    lateinit var taskRepository: TaskRepository
+    lateinit var taskRepositoryImpl: TaskRepositoryImpl
     lateinit var taskViewModel: TaskViewModel
     lateinit var taskFactory: TaskFactory
     private var taskAdapter: TaskAdapter? = null
@@ -49,12 +50,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         val tasksDao = Database.getInstance(application).taskDAO
 
-        taskRepository = TaskRepository(tasksDao)
-        getTaskListUseCase = GetTaskListUseCase(taskRepository)
-        deleteTaskUseCase = DeleteTaskUseCase(taskRepository)
-        insertTaskUseCase = InsertTaskUseCase(taskRepository)
-        deleteAllTasksUseCase = DeleteAllTasksUseCase(taskRepository)
-        updateTaskUseCase = UpdateTaskUseCase(taskRepository)
+        taskRepositoryImpl = TaskRepositoryImpl(tasksDao)
+        getTaskListUseCase = GetTaskListUseCase(taskRepositoryImpl)
+        deleteTaskUseCase = DeleteTaskUseCase(taskRepositoryImpl)
+        insertTaskUseCase = InsertTaskUseCase(taskRepositoryImpl)
+        deleteAllTasksUseCase = DeleteAllTasksUseCase(taskRepositoryImpl)
+        updateTaskUseCase = UpdateTaskUseCase(taskRepositoryImpl)
         taskFactory = TaskFactory(
             getTaskListUseCase,
             deleteTaskUseCase,
