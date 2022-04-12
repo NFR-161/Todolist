@@ -1,22 +1,16 @@
 package com.exampleone.todolist.data.repository
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 import com.exampleone.todolist.data.TaskDao
 import com.exampleone.todolist.data.TaskModel
-import com.exampleone.todolist.data.mapper.TaskMapper
-import com.exampleone.todolist.domain.TaskModelInfo
 import com.exampleone.todolist.domain.TaskRepository
 import javax.inject.Inject
 
-class TaskRepositoryImpl @Inject constructor (
-    private val taskDao: TaskDao,
-    private val mapper: TaskMapper): TaskRepository {
+class TaskRepositoryImpl @Inject constructor(
+    private val taskDao: TaskDao
+) : TaskRepository {
 
-    override suspend fun insertTask(taskModelInfo: TaskModelInfo) {
-        taskDao.insertTask(taskModelInfo)
-
-    override suspend fun insertTask(taskModel: TaskModelDb) {
+    override suspend fun insertTask(taskModel: TaskModel) {
         taskDao.insertTask(taskModel)
     }
 
@@ -32,7 +26,7 @@ class TaskRepositoryImpl @Inject constructor (
         taskDao.deleteAllTasks()
     }
 
-    override fun getAllTasks(): LiveData<List<TaskModelDb>> {
-          return taskDao.getAllTasks()
+    override fun getAllTasks(): LiveData<List<TaskModel>> {
+        return taskDao.getAllTasks()
     }
 }

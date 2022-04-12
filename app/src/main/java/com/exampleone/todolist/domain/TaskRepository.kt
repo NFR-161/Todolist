@@ -1,7 +1,6 @@
 package com.exampleone.todolist.domain
 
 import androidx.lifecycle.LiveData
-import com.exampleone.todolist.data.TaskDao
 import com.exampleone.todolist.data.TaskModel
 
 interface TaskRepository{

@@ -12,9 +12,8 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import com.exampleone.todolist.R
 import com.exampleone.todolist.data.Database
-import com.exampleone.todolist.data.TaskRepositoryImpl
+import com.exampleone.todolist.data.repository.TaskRepositoryImpl
 import com.exampleone.todolist.databinding.PanelEditTaskBinding
-import com.exampleone.todolist.domain.*
 import com.exampleone.todolist.domain.useCases.*
 import com.exampleone.todolist.presentation.TaskFactory
 import com.exampleone.todolist.presentation.TaskViewModel

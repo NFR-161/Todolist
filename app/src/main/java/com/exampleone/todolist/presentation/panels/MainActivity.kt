@@ -1,11 +1,11 @@
 package com.exampleone.todolist.presentation.panels
 
 import android.media.MediaPlayer
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
@@ -17,9 +17,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.exampleone.todolist.R
 import com.exampleone.todolist.data.Database
 import com.exampleone.todolist.data.TaskModel
-import com.exampleone.todolist.data.TaskRepositoryImpl
+import com.exampleone.todolist.data.repository.TaskRepositoryImpl
 import com.exampleone.todolist.databinding.ActivityMainBinding
-import com.exampleone.todolist.domain.*
 import com.exampleone.todolist.domain.useCases.*
 import com.exampleone.todolist.presentation.TaskAdapter
 import com.exampleone.todolist.presentation.TaskFactory
