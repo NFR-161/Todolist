@@ -1,6 +1,7 @@
 package com.exampleone.todolist.presentation.panels
 
 import android.app.ActivityOptions
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.transition.TransitionInflater
@@ -13,26 +14,29 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import com.exampleone.todolist.R
-import com.exampleone.todolist.data.Database
-import com.exampleone.todolist.data.repository.TaskRepositoryImpl
 import com.exampleone.todolist.databinding.AddBinding
-import com.exampleone.todolist.domain.useCases.*
+import com.exampleone.todolist.presentation.TaskApp
 import com.exampleone.todolist.presentation.TaskFactory
 import com.exampleone.todolist.presentation.TaskViewModel
+import javax.inject.Inject
 
 
 class Add : Fragment() {
 
     private var binding: AddBinding? = null
-    lateinit var getTaskListUseCase: GetTaskListUseCase
-    lateinit var deleteTaskUseCase: DeleteTaskUseCase
-    lateinit var insertTaskUseCase: InsertTaskUseCase
-    lateinit var deleteAllTasksUseCase: DeleteAllTasksUseCase
-    lateinit var updateTaskUseCase: UpdateTaskUseCase
-    private var taskRepositoryImpl: TaskRepositoryImpl? = null
     private var taskViewModel: TaskViewModel? = null
-    private var taskFactory: TaskFactory? = null
 
+    @Inject
+    lateinit var taskFactory: TaskFactory
+
+    private val component by lazy {
+        (requireActivity().application as TaskApp).component
+    }
+
+    override fun onAttach(context: Context) {
+        component.inject(this)
+        super.onAttach(context)
+    }
 
     override fun onCreateView(
 
@@ -46,20 +50,6 @@ class Add : Fragment() {
         enterTransition = inflater.inflateTransition(R.transition.slide_right)
 
 
-        val taskDao = Database.getInstance((context as FragmentActivity).application).taskDAO
-        taskRepositoryImpl = TaskRepositoryImpl(taskDao)
-        getTaskListUseCase = GetTaskListUseCase(taskRepositoryImpl!!)
-        deleteTaskUseCase = DeleteTaskUseCase(taskRepositoryImpl!!)
-        insertTaskUseCase = InsertTaskUseCase(taskRepositoryImpl!!)
-        deleteAllTasksUseCase = DeleteAllTasksUseCase(taskRepositoryImpl!!)
-        updateTaskUseCase = UpdateTaskUseCase(taskRepositoryImpl!!)
-        taskFactory = TaskFactory(
-            getTaskListUseCase,
-            deleteTaskUseCase,
-            insertTaskUseCase,
-            deleteAllTasksUseCase,
-            updateTaskUseCase
-        )
         taskViewModel = ViewModelProvider(this, taskFactory!!)[TaskViewModel::class.java]
 
         binding?.saveIT?.setOnClickListener(View.OnClickListener {

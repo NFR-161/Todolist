@@ -15,53 +15,36 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.exampleone.todolist.R
-import com.exampleone.todolist.data.Database
 import com.exampleone.todolist.data.TaskModel
-import com.exampleone.todolist.data.repository.TaskRepositoryImpl
 import com.exampleone.todolist.databinding.ActivityMainBinding
-import com.exampleone.todolist.domain.useCases.*
 import com.exampleone.todolist.presentation.TaskAdapter
+import com.exampleone.todolist.presentation.TaskApp
 import com.exampleone.todolist.presentation.TaskFactory
 import com.exampleone.todolist.presentation.TaskViewModel
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import javax.inject.Inject
 
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
-
-    lateinit var taskRepositoryImpl: TaskRepositoryImpl
     lateinit var taskViewModel: TaskViewModel
-    lateinit var taskFactory: TaskFactory
     private var taskAdapter: TaskAdapter? = null
-    lateinit var getTaskListUseCase: GetTaskListUseCase
-    lateinit var deleteTaskUseCase: DeleteTaskUseCase
-    lateinit var insertTaskUseCase: InsertTaskUseCase
-    lateinit var deleteAllTasksUseCase: DeleteAllTasksUseCase
-    lateinit var updateTaskUseCase: UpdateTaskUseCase
+
+    @Inject
+    lateinit var taskFactory: TaskFactory
 
     lateinit var binding: ActivityMainBinding
+    private val component by lazy {
+        (application as TaskApp).component
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        component.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        val tasksDao = Database.getInstance(application).taskDAO
-
-        taskRepositoryImpl = TaskRepositoryImpl(tasksDao)
-        getTaskListUseCase = GetTaskListUseCase(taskRepositoryImpl)
-        deleteTaskUseCase = DeleteTaskUseCase(taskRepositoryImpl)
-        insertTaskUseCase = InsertTaskUseCase(taskRepositoryImpl)
-        deleteAllTasksUseCase = DeleteAllTasksUseCase(taskRepositoryImpl)
-        updateTaskUseCase = UpdateTaskUseCase(taskRepositoryImpl)
-        taskFactory = TaskFactory(
-            getTaskListUseCase,
-            deleteTaskUseCase,
-            insertTaskUseCase,
-            deleteAllTasksUseCase,
-            updateTaskUseCase
-        )
         taskViewModel = ViewModelProvider(this, taskFactory)[TaskViewModel::class.java]
 
         initRecyclerTasks()
