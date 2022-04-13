@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.exampleone.todolist.R
 import com.exampleone.todolist.data.TaskModel
 import com.exampleone.todolist.databinding.ActivityMainBinding
-import com.exampleone.todolist.presentation.TaskAdapter
+import com.exampleone.todolist.presentation.adapter.TaskAdapter
 import com.exampleone.todolist.presentation.TaskApp
 import com.exampleone.todolist.presentation.TaskFactory
 import com.exampleone.todolist.presentation.TaskViewModel
@@ -89,8 +89,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun displayTasks() {
         taskViewModel.tasks.observe(this, Observer {
-            taskAdapter?.setList(it)
-            taskAdapter?.notifyDataSetChanged() //TODO: try to use another adapter
+            taskAdapter?.submitList(it)
         })
     }
 
@@ -129,7 +128,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val item = taskAdapter?.tasksList?.get(viewHolder.adapterPosition)
+                val item = taskAdapter?.currentList?.get(viewHolder.adapterPosition)
                 if (item != null) {
                     deleteTask(item)
                 }
