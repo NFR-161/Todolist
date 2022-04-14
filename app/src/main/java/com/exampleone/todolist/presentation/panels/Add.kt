@@ -23,8 +23,8 @@ import javax.inject.Inject
 
 class Add : Fragment() {
 
-    private var binding: AddBinding? = null
-    private var taskViewModel: TaskViewModel? = null
+    lateinit var binding: AddBinding
+    lateinit var  taskViewModel: TaskViewModel
 
     @Inject
     lateinit var taskFactory: TaskFactory
@@ -42,7 +42,7 @@ class Add : Fragment() {
 
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.add, container, false)
 
         // анимация
@@ -50,13 +50,13 @@ class Add : Fragment() {
         enterTransition = inflater.inflateTransition(R.transition.slide_right)
 
 
-        taskViewModel = ViewModelProvider(this, taskFactory!!)[TaskViewModel::class.java]
+        taskViewModel = ViewModelProvider(this, taskFactory)[TaskViewModel::class.java]
 
-        binding?.saveIT?.setOnClickListener(View.OnClickListener {
+        binding.saveIT.setOnClickListener(View.OnClickListener {
             sendTaskToMainAct()
         })
 
-        binding?.topAppBar?.setOnMenuItemClickListener { menuItem: MenuItem ->
+        binding.topAppBar.setOnMenuItemClickListener { menuItem: MenuItem ->
             when (menuItem.itemId) {
 
                 R.id.close -> {
@@ -72,7 +72,7 @@ class Add : Fragment() {
                 else -> false
             }
         }
-        return binding?.root
+        return binding.root
     }
 
     // запускаем main activity с анимацией
@@ -82,11 +82,11 @@ class Add : Fragment() {
     }
 
     private fun sendTaskToMainAct() {
-        binding?.apply {
+        binding.apply {
             if (enterTask.text.isNullOrBlank()) {
                 enterTask.requestFocus()
             } else {
-                taskViewModel?.startInsert(enterTask.text?.toString()!!)
+                taskViewModel.startInsert(enterTask.text?.toString()!!)
                 startActivity()
             }
         }

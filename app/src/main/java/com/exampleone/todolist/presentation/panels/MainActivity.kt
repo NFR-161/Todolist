@@ -12,28 +12,28 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.exampleone.todolist.R
 import com.exampleone.todolist.data.TaskModel
 import com.exampleone.todolist.databinding.ActivityMainBinding
-import com.exampleone.todolist.presentation.adapter.TaskAdapter
 import com.exampleone.todolist.presentation.TaskApp
 import com.exampleone.todolist.presentation.TaskFactory
 import com.exampleone.todolist.presentation.TaskViewModel
+import com.exampleone.todolist.presentation.adapter.TaskAdapter
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import javax.inject.Inject
 
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
+
     lateinit var taskViewModel: TaskViewModel
     private var taskAdapter: TaskAdapter? = null
 
     @Inject
     lateinit var taskFactory: TaskFactory
-
     lateinit var binding: ActivityMainBinding
+
     private val component by lazy {
         (application as TaskApp).component
     }
@@ -97,7 +97,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(view: View?) {
-
         when (view?.id) {
             R.id.fab -> launchFragmentAdd()
         }
@@ -125,7 +124,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             ): Boolean {
                 return false
             }
-
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val item = taskAdapter?.currentList?.get(viewHolder.adapterPosition)
                 if (item != null) {
@@ -143,7 +141,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         parameters.putString("idTask", taskModel.id.toString())
         parameters.putString("nameTask", taskModel.name)
         panelEditTask.arguments = parameters
-
         panelEditTask.show(supportFragmentManager, "editTask")
     }
 
@@ -153,17 +150,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun cancelOrOk(): Boolean {
-
         val builder = MaterialAlertDialogBuilder(this, R.style.MyDialogTheme)
             .setMessage(resources.getString(R.string.messageDialog))
-
             .setNeutralButton(resources.getString(R.string.close)) { dialog, which ->
             }
             .setPositiveButton(resources.getString(R.string.ok)) { dialog, which ->
                 taskViewModel.deleteAll()
             }
             .show()
-
         builder.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(
             ContextCompat.getColor(
                 this,

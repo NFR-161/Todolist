@@ -20,9 +20,10 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import javax.inject.Inject
 
 class PanelEditTask : BottomSheetDialogFragment(), View.OnKeyListener {
-    private var binding: PanelEditTaskBinding? = null
+
+    lateinit var binding: PanelEditTaskBinding
     private var idTask: Int? = null
-    private var taskViewModel: TaskViewModel? = null
+    lateinit var taskViewModel: TaskViewModel
 
     @Inject
     lateinit var taskFactory: TaskFactory
@@ -39,18 +40,19 @@ class PanelEditTask : BottomSheetDialogFragment(), View.OnKeyListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-
-        binding = DataBindingUtil.inflate(inflater, R.layout.panel_edit_task, container, false)
-
+    ): View {
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.panel_edit_task,
+            container,
+            false
+        )
         idTask = arguments?.getString("idTask")?.toInt()
-        binding?.editTask?.setText(arguments?.getString("nameTask").toString())
+        binding.editTask.setText(arguments?.getString("nameTask").toString())
 
-        taskViewModel = ViewModelProvider(this, taskFactory!!)[TaskViewModel::class.java]
-
-        binding?.editTask?.setOnKeyListener(this)
-
-        return binding?.root
+        taskViewModel = ViewModelProvider(this, taskFactory)[TaskViewModel::class.java]
+        binding.editTask.setOnKeyListener(this)
+        return binding.root
     }
 
     override fun onKey(view: View, i: Int, keyEvent: KeyEvent): Boolean {
@@ -58,9 +60,9 @@ class PanelEditTask : BottomSheetDialogFragment(), View.OnKeyListener {
 
             R.id.editTask -> {
                 if (keyEvent.action == KeyEvent.ACTION_DOWN && i == KeyEvent.KEYCODE_ENTER) {
-                    binding?.apply {
+                    binding.apply {
                         if (!editTask.text.toString().isNullOrBlank())
-                            taskViewModel?.startUpdateTask(
+                            taskViewModel.startUpdateTask(
                                 idTask.toString().toInt(),
                                 editTask.text?.toString()!!
                             )
@@ -71,11 +73,9 @@ class PanelEditTask : BottomSheetDialogFragment(), View.OnKeyListener {
                         startActivity(Intent(context, MainActivity::class.java), options.toBundle())
                         return true
                     }
-
                 }
             }
         }
         return false
     }
-
 }
