@@ -7,6 +7,8 @@ import com.exampleone.todolist.presentation.panels.PanelEditTask
 import dagger.BindsInstance
 import dagger.Component
 
+
+@ApplicationScope
 @Component(
     modules = [DataModule::class, ViewModelModule::class]
 )

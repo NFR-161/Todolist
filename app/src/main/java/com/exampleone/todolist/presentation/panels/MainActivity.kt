@@ -75,14 +75,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun initRecyclerTasks() {
-        binding.recyclerTodoList.layoutManager = LinearLayoutManager(this)
         taskAdapter = TaskAdapter(
             { nameT, taskModel -> strikeThrough(nameT, taskModel) },
             { startPencil() },
             { taskModel -> editTask(taskModel) }
         )
-
         binding.recyclerTodoList.adapter = taskAdapter
+        binding.recyclerTodoList.itemAnimator = null
         setupSwipeListener(binding.recyclerTodoList)
 
     }

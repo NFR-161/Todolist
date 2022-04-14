@@ -18,6 +18,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerTodoList"
                 android:layout_width="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:layout_marginBottom="?attr/actionBarSize"
                 android:layout_height="wrap_content" />
             </FrameLayout>

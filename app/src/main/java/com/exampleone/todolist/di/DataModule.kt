@@ -13,11 +13,12 @@ import dagger.Provides
 @Module
 interface DataModule {
 
+    @ApplicationScope
     @Binds
     fun bindTaskRepository(impl: TaskRepositoryImpl): TaskRepository
 
     companion object {
-
+        @ApplicationScope
         @Provides
         fun provideTaskInfoDao(
             application: Application
