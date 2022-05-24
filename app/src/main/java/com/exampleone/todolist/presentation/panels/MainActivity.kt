@@ -146,7 +146,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun launchFragmentAdd() {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.contentAddText, Add()).addToBackStack(null).commit()
+            .replace(R.id.contentAddText, Add.newInstance()).addToBackStack(null).commit()
     }
 
     private fun cancelOrOk(): Boolean {

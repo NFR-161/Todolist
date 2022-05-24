@@ -91,6 +91,10 @@ class Add : Fragment() {
             }
         }
     }
+    companion object{
+        fun newInstance() = Add()
+    }
+
 }
 
 

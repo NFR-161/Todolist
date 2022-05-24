@@ -40,40 +40,41 @@ class TaskAdapter(
     }
 
 }
-    class TaskHolder(private val binding: TaskItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(
-            task: TaskModel,
-            strikeThrough: (MaterialCheckBox, TaskModel) -> Unit,
-            startPencil: () -> Unit,
-            editTask: (TaskModel) -> Unit
-        ) {
-            binding.apply {
-                if (task.isDone) {
-                    val sp = SpannableString(task.name)
-                    sp.setSpan(StrikethroughSpan(), 0, task.name.length, 0)
-                    nameTask.text = sp
-                    nameTask.isChecked = true
+class TaskHolder(private val binding: TaskItemBinding) :
+    RecyclerView.ViewHolder(binding.root) {
 
-                } else {
-                    nameTask.text = task.name
-                    nameTask.isChecked = false
-                }
-                nameTask.setOnClickListener(View.OnClickListener {
-                    strikeThrough(nameTask, task)
-                    if (nameTask.isChecked) {
-                        startPencil()
-                    }
-                })
-                nameTask.setOnLongClickListener(View.OnLongClickListener {
-                    if (!nameTask.isChecked && !task.isDone) {
-                        editTask(task)
-                    }
-                    true
-                })
+    fun bind(
+        task: TaskModel,
+        strikeThrough: (MaterialCheckBox, TaskModel) -> Unit,
+        startPencil: () -> Unit,
+        editTask: (TaskModel) -> Unit
+    ) {
+        binding.apply {
+            if (task.isDone) {
+                val sp = SpannableString(task.name)
+                sp.setSpan(StrikethroughSpan(), 0, task.name.length, 0)
+                nameTask.text = sp
+                nameTask.isChecked = true
+
+            } else {
+                nameTask.text = task.name
+                nameTask.isChecked = false
             }
-
+            nameTask.setOnClickListener(View.OnClickListener {
+                strikeThrough(nameTask, task)
+                if (nameTask.isChecked) {
+                    startPencil()
+                }
+            })
+            nameTask.setOnLongClickListener(View.OnLongClickListener {
+                if (!nameTask.isChecked && !task.isDone) {
+                    editTask(task)
+                }
+                true
+            })
         }
+
     }
+}
 
