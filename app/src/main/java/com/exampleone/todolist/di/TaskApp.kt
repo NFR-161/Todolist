@@ -1,7 +1,6 @@
-package com.exampleone.todolist.presentation
+package com.exampleone.todolist.di
 
 import android.app.Application
-import com.exampleone.todolist.di.DaggerApplicationComponent
 
 class TaskApp: Application() {
     val component by lazy {

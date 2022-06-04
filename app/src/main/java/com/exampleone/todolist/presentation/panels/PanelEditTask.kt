@@ -13,9 +13,9 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import com.exampleone.todolist.R
 import com.exampleone.todolist.databinding.PanelEditTaskBinding
-import com.exampleone.todolist.presentation.TaskApp
-import com.exampleone.todolist.presentation.TaskFactory
-import com.exampleone.todolist.presentation.TaskViewModel
+import com.exampleone.todolist.di.TaskApp
+import com.exampleone.todolist.presentation.viewmodels.TaskFactory
+import com.exampleone.todolist.presentation.viewmodels.TaskViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import javax.inject.Inject
 

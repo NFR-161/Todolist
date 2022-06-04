@@ -15,16 +15,16 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import com.exampleone.todolist.R
 import com.exampleone.todolist.databinding.AddBinding
-import com.exampleone.todolist.presentation.TaskApp
-import com.exampleone.todolist.presentation.TaskFactory
-import com.exampleone.todolist.presentation.TaskViewModel
+import com.exampleone.todolist.di.TaskApp
+import com.exampleone.todolist.presentation.viewmodels.TaskFactory
+import com.exampleone.todolist.presentation.viewmodels.TaskViewModel
 import javax.inject.Inject
 
 
 class Add : Fragment() {
 
     lateinit var binding: AddBinding
-    lateinit var  taskViewModel: TaskViewModel
+    lateinit var taskViewModel: TaskViewModel
 
     @Inject
     lateinit var taskFactory: TaskFactory
@@ -39,40 +39,24 @@ class Add : Fragment() {
     }
 
     override fun onCreateView(
-
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.add, container, false)
 
-        // анимация
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         val inflater = TransitionInflater.from(requireContext())
         enterTransition = inflater.inflateTransition(R.transition.slide_right)
-
-
         taskViewModel = ViewModelProvider(this, taskFactory)[TaskViewModel::class.java]
-
         binding.saveIT.setOnClickListener(View.OnClickListener {
             sendTaskToMainAct()
         })
-
-        binding.topAppBar.setOnMenuItemClickListener { menuItem: MenuItem ->
-            when (menuItem.itemId) {
-
-                R.id.close -> {
-                    startActivity()
-
-                    true
-                }
-
-                R.id.save -> {
-                    sendTaskToMainAct()
-                    true
-                }
-                else -> false
-            }
-        }
-        return binding.root
+        closeOrSafe()
     }
 
     // запускаем main activity с анимацией
@@ -91,8 +75,28 @@ class Add : Fragment() {
             }
         }
     }
-    companion object{
+
+    companion object {
         fun newInstance() = Add()
+    }
+
+    private fun closeOrSafe() {
+        binding.topAppBar.setOnMenuItemClickListener { menuItem: MenuItem ->
+            when (menuItem.itemId) {
+
+                R.id.close -> {
+                    startActivity()
+
+                    true
+                }
+
+                R.id.save -> {
+                    sendTaskToMainAct()
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
 }

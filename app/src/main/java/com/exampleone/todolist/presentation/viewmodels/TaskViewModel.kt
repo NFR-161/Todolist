@@ -1,8 +1,7 @@
-package com.exampleone.todolist.presentation
+package com.exampleone.todolist.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.exampleone.todolist.data.TaskModel
 import com.exampleone.todolist.domain.TaskItem
 import com.exampleone.todolist.domain.useCases.*
 import kotlinx.coroutines.launch

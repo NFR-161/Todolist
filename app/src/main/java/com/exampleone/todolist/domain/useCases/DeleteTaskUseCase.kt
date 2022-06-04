@@ -1,6 +1,5 @@
 package com.exampleone.todolist.domain.useCases
 
-import com.exampleone.todolist.data.TaskModel
 import com.exampleone.todolist.domain.TaskItem
 import com.exampleone.todolist.domain.TaskRepository
 import javax.inject.Inject

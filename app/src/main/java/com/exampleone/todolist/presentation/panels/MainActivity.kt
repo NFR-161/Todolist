@@ -14,12 +14,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.exampleone.todolist.R
-import com.exampleone.todolist.data.TaskModel
 import com.exampleone.todolist.databinding.ActivityMainBinding
 import com.exampleone.todolist.domain.TaskItem
-import com.exampleone.todolist.presentation.TaskApp
-import com.exampleone.todolist.presentation.TaskFactory
-import com.exampleone.todolist.presentation.TaskViewModel
+import com.exampleone.todolist.di.TaskApp
+import com.exampleone.todolist.presentation.CancelOrOk
+import com.exampleone.todolist.presentation.SwipeDelete
+import com.exampleone.todolist.presentation.viewmodels.TaskFactory
+import com.exampleone.todolist.presentation.viewmodels.TaskViewModel
 import com.exampleone.todolist.presentation.adapter.TaskAdapter
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -28,8 +29,14 @@ import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
-    lateinit var taskViewModel: TaskViewModel
-    private var taskAdapter: TaskAdapter? = null
+    private lateinit var taskViewModel: TaskViewModel
+    private lateinit var taskAdapter: TaskAdapter
+
+    @Inject
+    lateinit var swipeDelete: SwipeDelete
+
+    @Inject
+    lateinit var cancelOrOk: CancelOrOk
 
     @Inject
     lateinit var taskFactory: TaskFactory
@@ -45,7 +52,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(R.layout.activity_main)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-
         taskViewModel = ViewModelProvider(this, taskFactory)[TaskViewModel::class.java]
 
         initRecyclerTasks()
@@ -53,26 +59,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         // startAnimation()
 
         binding.fab.setOnClickListener(this)
-        binding.bottomBarFAB.setOnMenuItemClickListener { menuItem: MenuItem ->
-
-            when (menuItem.itemId) {
-                R.id.showFab -> {
-                    if (binding.fab.isVisible) {
-                        binding.fab.visibility = View.GONE
-                    } else binding.fab.visibility = View.VISIBLE
-                    true
-                }
-
-                R.id.settings -> {
-                    true
-                }
-                R.id.help -> {
-                    true
-                }
-                R.id.clear -> cancelOrOk()
-                else -> false
-            }
-        }
+        tapMenu()
     }
 
     private fun initRecyclerTasks() {
@@ -83,18 +70,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         )
         binding.recyclerTodoList.adapter = taskAdapter
         binding.recyclerTodoList.itemAnimator = null
-        setupSwipeListener(binding.recyclerTodoList)
+        swipeDelete.setupSwipeListener(binding.recyclerTodoList, taskViewModel, taskAdapter)
 
     }
 
     private fun displayTasks() {
         taskViewModel.tasks.observe(this, Observer {
-            taskAdapter?.submitList(it)
+            taskAdapter.submitList(it)
         })
-    }
-
-    private fun deleteTask(taskItem: TaskItem) {
-        taskViewModel.delete(taskItem)
     }
 
     override fun onClick(view: View?) {
@@ -112,30 +95,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         pencil.start()
     }
 
-    private fun setupSwipeListener(rvTaskList: RecyclerView) {
-        val callback = object : ItemTouchHelper.SimpleCallback(
-            0,
-            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
-        ) {
-
-            override fun onMove(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                target: RecyclerView.ViewHolder
-            ): Boolean {
-                return false
-            }
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val item = taskAdapter?.currentList?.get(viewHolder.adapterPosition)
-                if (item != null) {
-                    deleteTask(item)
-                }
-            }
-        }
-        val itemTouchHelper = ItemTouchHelper(callback)
-        itemTouchHelper.attachToRecyclerView(rvTaskList)
-    }
-
     private fun editTask(taskItem: TaskItem) {
         val panelEditTask = PanelEditTask()
         val parameters = Bundle()
@@ -150,34 +109,27 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             .replace(R.id.contentAddText, Add.newInstance()).addToBackStack(null).commit()
     }
 
-    private fun cancelOrOk(): Boolean {
-        val builder = MaterialAlertDialogBuilder(this, R.style.MyDialogTheme)
-            .setMessage(resources.getString(R.string.messageDialog))
-            .setNeutralButton(resources.getString(R.string.close)) { dialog, which ->
+    private fun tapMenu() {
+        binding.bottomBarFAB.setOnMenuItemClickListener { menuItem: MenuItem ->
+
+            when (menuItem.itemId) {
+                R.id.showFab -> {
+                    if (binding.fab.isVisible) {
+                        binding.fab.visibility = View.GONE
+                    } else binding.fab.visibility = View.VISIBLE
+                    true
+                }
+
+                R.id.settings -> {
+                    true
+                }
+                R.id.help -> {
+                    true
+                }
+                R.id.clear -> cancelOrOk.cancelOrOk(taskViewModel, this)
+                else -> false
             }
-            .setPositiveButton(resources.getString(R.string.ok)) { dialog, which ->
-                taskViewModel.deleteAll()
-            }
-            .show()
-        builder.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(
-            ContextCompat.getColor(
-                this,
-                R.color.black
-            )
-        )
-        builder.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(
-            ContextCompat.getColor(
-                this,
-                R.color.black
-            )
-        )
-        builder.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(
-            ContextCompat.getColor(
-                this,
-                R.color.black
-            )
-        )
-        return true
+        }
     }
 }
 
