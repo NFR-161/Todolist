@@ -1,17 +1,13 @@
 package com.exampleone.todolist.presentation.panels
 
-import android.app.ActivityOptions
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.transition.TransitionInflater
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import com.exampleone.todolist.R
 import com.exampleone.todolist.databinding.AddBinding
@@ -23,7 +19,11 @@ import javax.inject.Inject
 
 class Add : Fragment() {
 
-    lateinit var binding: AddBinding
+    private var _binding: AddBinding? = null
+
+    private val binding: AddBinding
+        get() = _binding ?: throw RuntimeException("FragmentAdd is null")
+
     lateinit var taskViewModel: TaskViewModel
 
     @Inject
@@ -42,7 +42,7 @@ class Add : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.add, container, false)
+        _binding = DataBindingUtil.inflate(inflater, R.layout.add, container, false)
 
         return binding.root
     }
@@ -50,19 +50,20 @@ class Add : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val inflater = TransitionInflater.from(requireContext())
-        enterTransition = inflater.inflateTransition(R.transition.slide_right)
         taskViewModel = ViewModelProvider(this, taskFactory)[TaskViewModel::class.java]
+
         binding.saveIT.setOnClickListener(View.OnClickListener {
             sendTaskToMainAct()
         })
         closeOrSafe()
+
     }
 
-    // запускаем main activity с анимацией
-    private fun startActivity() {
-        val options = ActivityOptions.makeSceneTransitionAnimation(context as FragmentActivity)
-        startActivity(Intent(context, MainActivity::class.java), options.toBundle())
+    private fun backToActivity() {
+        activity?.supportFragmentManager?.beginTransaction()
+            ?.remove(this)
+            ?.commit()
+
     }
 
     private fun sendTaskToMainAct() {
@@ -71,7 +72,7 @@ class Add : Fragment() {
                 enterTask.requestFocus()
             } else {
                 taskViewModel.startInsert(enterTask.text?.toString()!!)
-                startActivity()
+                backToActivity()
             }
         }
     }
@@ -85,7 +86,7 @@ class Add : Fragment() {
             when (menuItem.itemId) {
 
                 R.id.close -> {
-                    startActivity()
+                    backToActivity()
 
                     true
                 }

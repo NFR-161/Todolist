@@ -4,13 +4,13 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.exampleone.todolist.di.ApplicationScope
 
-
+@ApplicationScope
 @Database(entities = [TaskModel::class], version = 1)
 abstract class Database : RoomDatabase() {
 
     abstract val taskDAO: TaskDao
-
 
     companion object {
         @Volatile

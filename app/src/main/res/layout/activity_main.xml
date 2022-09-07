@@ -1,33 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
+        android:id="@+id/contentAddText"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/gray"
         tools:context=".presentation.panels.MainActivity">
 
-        <FrameLayout
-            android:id="@+id/contentAddText2"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerTodoList"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerTodoList"
-                android:layout_width="match_parent"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                android:layout_marginBottom="?attr/actionBarSize"
-                android:layout_height="wrap_content" />
-            </FrameLayout>
-
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="?attr/actionBarSize"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/coordinatorLayoutFAB"
             android:layout_width="match_parent"
             android:layout_height="100dp"
+            android:layout_gravity="bottom"
+            android:foregroundGravity="bottom"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
@@ -51,15 +46,8 @@
                 app:borderWidth="0dp"
                 app:layout_anchor="@id/bottomBarFAB" />
 
-
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
-        <FrameLayout
-            android:id="@+id/contentAddText"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
 
-        </FrameLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
 
 </layout>

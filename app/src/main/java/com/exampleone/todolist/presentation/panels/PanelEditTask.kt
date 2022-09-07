@@ -68,14 +68,17 @@ class PanelEditTask : BottomSheetDialogFragment(), View.OnKeyListener {
                             )
                         editTask.setText("")
                         dismiss()
-                        val options =
-                            ActivityOptions.makeSceneTransitionAnimation(context as FragmentActivity)
-                        startActivity(Intent(context, MainActivity::class.java), options.toBundle())
+                        launchAddFrag()
                         return true
                     }
                 }
             }
         }
         return false
+    }
+
+    private fun launchAddFrag() {
+        activity?.supportFragmentManager?.beginTransaction()
+            ?.remove(this@PanelEditTask)?.commit()
     }
 }

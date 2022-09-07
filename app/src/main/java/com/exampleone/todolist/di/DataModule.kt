@@ -20,9 +20,7 @@ interface DataModule {
     companion object {
         @ApplicationScope
         @Provides
-        fun provideTaskInfoDao(
-            application: Application
-        ): TaskDao {
+        fun provideTaskInfoDao(application: Application): TaskDao {
             return Database.getInstance(application).taskDAO
         }
     }

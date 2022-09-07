@@ -21,9 +21,6 @@ interface ApplicationComponent {
 
     @Component.Factory
     interface Factory {
-
-        fun create(
-            @BindsInstance application: Application
-        ): ApplicationComponent
+        fun create(@BindsInstance application: Application): ApplicationComponent
     }
 }

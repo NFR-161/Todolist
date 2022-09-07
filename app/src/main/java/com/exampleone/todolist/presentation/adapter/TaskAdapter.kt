@@ -1,14 +1,10 @@
 package com.exampleone.todolist.presentation.adapter
 
 
-import android.text.SpannableString
-import android.text.style.StrikethroughSpan
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
 import com.exampleone.todolist.R
 import com.exampleone.todolist.databinding.TaskItemBinding
 import com.exampleone.todolist.domain.TaskItem
@@ -18,6 +14,7 @@ class TaskAdapter(
     private val strikeThrough: (MaterialCheckBox, TaskItem) -> Unit,
     private val startPencil: () -> Unit,
     private val editTask: (TaskItem) -> Unit
+
 ) : ListAdapter<TaskItem, TaskHolder>(TaskInfoDiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskHolder {

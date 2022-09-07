@@ -1,4 +1,4 @@
-package com.exampleone.todolist.presentation
+package com.exampleone.todolist.presentation.deleteAnimation
 
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -7,6 +7,7 @@ import com.exampleone.todolist.presentation.viewmodels.TaskViewModel
 import javax.inject.Inject
 
 class SwipeDelete @Inject constructor() {
+
       fun setupSwipeListener(
         rvTaskList: RecyclerView,
         taskViewModel: TaskViewModel,
@@ -35,4 +36,6 @@ class SwipeDelete @Inject constructor() {
         val itemTouchHelper = ItemTouchHelper(callback)
         itemTouchHelper.attachToRecyclerView(rvTaskList)
     }
+
+
 }

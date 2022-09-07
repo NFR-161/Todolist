@@ -9,4 +9,5 @@ class DeleteTaskUseCase @Inject constructor(private val taskRepository: TaskRepo
     suspend operator fun invoke(taskItem: TaskItem) {
         return taskRepository.deleteTask(taskItem)
     }
+
 }

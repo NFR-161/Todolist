@@ -8,8 +8,9 @@ import com.exampleone.todolist.databinding.TaskItemBinding
 import com.exampleone.todolist.domain.TaskItem
 import com.google.android.material.checkbox.MaterialCheckBox
 
-    class TaskHolder(private val binding: TaskItemBinding) :
-    RecyclerView.ViewHolder(binding.root) {
+class TaskHolder(
+    private val binding: TaskItemBinding
+) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(
         task: TaskItem,
