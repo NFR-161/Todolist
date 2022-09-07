@@ -2,98 +2,78 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <FrameLayout
 
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".presentation.Add">
+        android:orientation="vertical"
+        android:background="@color/gray">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/sectTopBar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/gray">
+            android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.LinearLayoutCompat
+            <com.google.android.material.appbar.AppBarLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="wrap_content">
 
-                <androidx.coordinatorlayout.widget.CoordinatorLayout
-                    android:id="@+id/sectTopBar"
+                <com.google.android.material.appbar.MaterialToolbar
+                    android:id="@+id/topAppBar"
+                    style="@style/Widget.MaterialComponents.Toolbar.Primary"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="13.1">
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@color/black"
+                    app:menu="@menu/top_menu_add_text"
+                    app:title="@string/newTask"
+                    app:titleTextColor="@color/white" />
 
-                    <com.google.android.material.appbar.AppBarLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+            </com.google.android.material.appbar.AppBarLayout>
 
-                        <com.google.android.material.appbar.MaterialToolbar
-                            android:id="@+id/topAppBar"
-                            android:layout_width="match_parent"
-                            android:layout_height="?attr/actionBarSize"
-                            android:background="@color/black"
-                            app:title="@string/newTask"
-                            app:titleTextColor="@color/white"
-                            app:menu="@menu/top_menu_add_text"
-                            style="@style/Widget.MaterialComponents.Toolbar.Primary"/>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-                    </com.google.android.material.appbar.AppBarLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/sectionEnterTask"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:hint="@string/hint"
+            android:textColorHint="@color/gray"
+            app:boxBackgroundColor="@android:color/holo_blue_dark"
+            app:boxStrokeColor="@color/teal_200"
+            app:boxStrokeWidthFocused="4dp"
+            app:endIconMode="clear_text"
+            app:endIconTint="@android:color/holo_red_light"
+            app:hintTextColor="@android:color/darker_gray"
+            app:layout_constraintTop_toTopOf="parent"
+            app:startIconContentDescription="@string/enter"
+            app:startIconTint="@android:color/black"
+            tools:layout_editor_absoluteX="5dp">
 
-                </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/sectionEnterTask"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/enterTask"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:hint="@string/hint"
-                app:boxBackgroundColor="@android:color/holo_blue_dark"
-                app:boxStrokeColor="@color/teal_200"
-                app:boxStrokeWidthFocused="4dp"
+                android:layout_marginTop="180dp"
+                android:inputType="textMultiLine"
+                android:textColor="@android:color/black"
                 android:textColorHint="@color/gray"
-                app:endIconMode="clear_text"
-                app:endIconTint="@android:color/holo_red_light"
-                app:hintTextColor="@android:color/darker_gray"
-                app:layout_constraintTop_toTopOf="parent"
-                app:startIconContentDescription="@string/enter"
-                app:startIconTint="@android:color/black"
-                tools:layout_editor_absoluteX="5dp">
+                android:textCursorDrawable="@android:drawable/status_bar_item_background"
+                app:backgroundTint="@android:color/white" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/enterTask"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="180dp"
-                    android:inputType="textMultiLine"
-                    android:textColor="@android:color/black"
-                    android:textColorHint="@color/gray"
-                    android:textCursorDrawable="@android:drawable/status_bar_item_background"
-                    app:backgroundTint="@android:color/white" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-            </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/saveIT"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:backgroundTint="@color/white"
+            android:text="@string/save"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sectionEnterTask" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/saveIT"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="5dp"
-                android:text="@string/save"
-                android:textColor="@color/black"
-                android:backgroundTint="@color/white"
-                app:layout_constraintTop_toBottomOf="@id/sectionEnterTask"
-                app:layout_constraintStart_toEndOf="parent"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/resEnterTask"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/saveIT"
-                android:textColor="@color/orange"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </FrameLayout>
 </layout>

@@ -1,6 +1,7 @@
-package com.exampleone.todolist.presentation
+package com.exampleone.todolist.presentation.panels
 
 import android.app.ActivityOptions
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
@@ -11,38 +12,47 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import com.exampleone.todolist.R
-import com.exampleone.todolist.data.Database
 import com.exampleone.todolist.databinding.PanelEditTaskBinding
-import com.exampleone.todolist.domain.TaskRepository
+import com.exampleone.todolist.di.TaskApp
+import com.exampleone.todolist.presentation.viewmodels.TaskFactory
+import com.exampleone.todolist.presentation.viewmodels.TaskViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import javax.inject.Inject
 
 class PanelEditTask : BottomSheetDialogFragment(), View.OnKeyListener {
 
-    private var binding: PanelEditTaskBinding? = null
-    private var taskRepository: TaskRepository? = null
-    private var taskViewModel: TaskViewModel? = null
-    private var factory: TaskFactory? = null
+    lateinit var binding: PanelEditTaskBinding
     private var idTask: Int? = null
+    lateinit var taskViewModel: TaskViewModel
 
+    @Inject
+    lateinit var taskFactory: TaskFactory
+
+    private val component by lazy {
+        (requireActivity().application as TaskApp).component
+    }
+
+    override fun onAttach(context: Context) {
+        component.inject(this)
+        super.onAttach(context)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-
-        binding = DataBindingUtil.inflate(inflater, R.layout.panel_edit_task, container, false)
-
+    ): View {
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.panel_edit_task,
+            container,
+            false
+        )
         idTask = arguments?.getString("idTask")?.toInt()
-        binding?.editTask?.setText(arguments?.getString("nameTask").toString())
+        binding.editTask.setText(arguments?.getString("nameTask").toString())
 
-        val categoriesDao = Database.getInstance((context as FragmentActivity).application).taskDAO
-        taskRepository = TaskRepository(categoriesDao)
-        factory = TaskFactory(taskRepository!!)
-        taskViewModel = ViewModelProvider(this, factory!!)[TaskViewModel::class.java]
-
-        binding?.editTask?.setOnKeyListener(this)
-
-        return binding?.root
+        taskViewModel = ViewModelProvider(this, taskFactory)[TaskViewModel::class.java]
+        binding.editTask.setOnKeyListener(this)
+        return binding.root
     }
 
     override fun onKey(view: View, i: Int, keyEvent: KeyEvent): Boolean {
@@ -50,24 +60,25 @@ class PanelEditTask : BottomSheetDialogFragment(), View.OnKeyListener {
 
             R.id.editTask -> {
                 if (keyEvent.action == KeyEvent.ACTION_DOWN && i == KeyEvent.KEYCODE_ENTER) {
-                    binding?.apply {
+                    binding.apply {
                         if (!editTask.text.toString().isNullOrBlank())
-                            taskViewModel?.startUpdateTask(
+                            taskViewModel.startUpdateTask(
                                 idTask.toString().toInt(),
                                 editTask.text?.toString()!!
                             )
                         editTask.setText("")
                         dismiss()
-                        val options =
-                            ActivityOptions.makeSceneTransitionAnimation(context as FragmentActivity)
-                        startActivity(Intent(context, MainActivity::class.java), options.toBundle())
+                        launchAddFrag()
                         return true
                     }
-
                 }
             }
         }
         return false
     }
 
+    private fun launchAddFrag() {
+        activity?.supportFragmentManager?.beginTransaction()
+            ?.remove(this@PanelEditTask)?.commit()
+    }
 }

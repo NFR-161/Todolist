@@ -33,6 +33,7 @@ android {
     dataBinding {
         enabled = true
     }
+    namespace 'com.exampleone.todolist'
 
 }
 
@@ -74,7 +75,8 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version"
     // Annotation processor
     implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
-
+    implementation 'com.google.dagger:dagger:2.35.1'
+    kapt 'com.google.dagger:dagger-compiler:2.35.1'
 
 //coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
